@@ -60,8 +60,15 @@ def read_and_parse(jdata):
         data_dict[name][curr_date] = parsed_object
     return data_dict
 
-
-
+def output_to_string(parsed_data):
+    string = ""
+    string += "Country: "+str(parsed_data[0])
+    string += "\nConfirmed cases: "+str(parsed_data[7])
+    string += "\nTotal death: "+str(parsed_data[8])
+    string += "\nTotal recovered: "+str(parsed_data[9])
+    string += "\nTotal active: "+str(parsed_data[10])
+    string += "\n\nData date: +"+str(parsed_data[11])[:10]
+    return string
 ## Use API
 # request = requests.get("https://api.covid19api.com/live/country/south-africa/status/confirmed")
 # jdata = request.json()
@@ -72,6 +79,5 @@ fname = "Live-By-Country-All-Status.json"
 with open("./json/"+fname) as jfile:
     jdata = json.load(jfile)
     parsed_data = read_and_parse(jdata)
-    print(parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z"))
-
+    print(output_to_string(parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z")))
 
