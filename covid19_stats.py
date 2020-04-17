@@ -2,6 +2,7 @@
 import json
 import requests
 import smtplib
+import boto3
 from datetime import date
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -101,25 +102,47 @@ def send_email():
     server.sendmail(EMAIL, send_to, text)
     server.quit()
 
-## Use API
-# request = requests.get("https://api.covid19api.com/live/country/south-africa/status/confirmed")
-# jdata = request.json()
-
-## Use JSON file
-fname = "Live-By-Country-All-Status.json"
-
-headers = {}
-payload = {}
-
-response = requests.request("GET", URL, headers=headers, data=payload)
-
-with open("./json/"+fname) as jfile:
-    jdata = json.load(jfile)
-    parsed_data = read_and_parse(jdata)
-    print(parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z"))
 
 
-message = response.text
-msg = create_email()
-msg.attach(MIMEText(message))
-send_email()
+def main():
+    ## Use API
+    # request = requests.get("https://api.covid19api.com/live/country/south-africa/status/confirmed")
+    # jdata = request.json()
+
+    ## Use JSON file
+    fname = "Live-By-Country-All-Status.json"
+
+    headers = {}
+    payload = {}
+
+    response = requests.request("GET", URL, headers=headers, data=payload)
+
+    with open("./json/" + fname) as jfile:
+        jdata = json.load(jfile)
+        parsed_data = read_and_parse(jdata)
+        print(parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z"))
+
+    message = response.text
+    msg = create_email()
+    msg.attach(MIMEText(message))
+    send_email()
+
+def temp():
+    fname = "Live-By-Country-All-Status.json"
+
+    with open("./json/" + fname) as jfile:
+        jdata = json.load(jfile)
+        parsed_data = read_and_parse(jdata)
+        print(parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z"))
+    return output_to_string(parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z"))
+
+def sendText():
+    sns = boto3.client(
+        'sns',
+        aws_access_key_id="",
+        aws_secret_access_key="",
+        region_name="us-east-1")
+
+    sns.publish(PhoneNumber="+", Message=temp())
+
+sendText()
