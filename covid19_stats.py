@@ -1,20 +1,9 @@
 
 import json
 import requests
-import smtplib
-from datetime import date
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 
 # request = requests.get("https://api.covid19api.com/live/country/united-states")
 # print(request.text)
-
-PORT = 587
-EMAIL = "coronavirusapi@gmail.com"
-PASSWORD = "s+&V)4$V[q"
-send_to = "duncanws@hotmail.com"
-URL = "https://api.covid19api.com/dayone/country/united-states/status/confirmed"
-
 
 '''
 
@@ -72,34 +61,6 @@ def read_and_parse(jdata):
     return data_dict
 
 
-def output_to_string(parsed_data):
-    string = ""
-    string += "Country: "+str(parsed_data[0])
-    string += "\nConfirmed cases: "+str(parsed_data[7])
-    string += "\nTotal death: "+str(parsed_data[8])
-    string += "\nTotal recovered: "+str(parsed_data[9])
-    string += "\nTotal active: "+str(parsed_data[10])
-    string += "\n\nData date: +"+str(parsed_data[11])[:10]
-    return string
-
-
-def create_email():
-    today = date.today().strftime("%m/%d/%Y")
-    subject = "Coronavirus Stats for: " + today
-    content = MIMEMultipart()
-    content['From'] = EMAIL
-    content['To'] = send_to
-    content['Subject'] = subject
-    return content
-
-
-def send_email():
-    server = smtplib.SMTP('smtp.gmail.com', PORT)
-    server.starttls()
-    server.login(EMAIL, PASSWORD)
-    text = msg.as_string()
-    server.sendmail(EMAIL, send_to, text)
-    server.quit()
 
 ## Use API
 # request = requests.get("https://api.covid19api.com/live/country/south-africa/status/confirmed")
@@ -108,18 +69,9 @@ def send_email():
 ## Use JSON file
 fname = "Live-By-Country-All-Status.json"
 
-headers = {}
-payload = {}
-
-response = requests.request("GET", URL, headers=headers, data=payload)
-
 with open("./json/"+fname) as jfile:
     jdata = json.load(jfile)
     parsed_data = read_and_parse(jdata)
     print(parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z"))
 
 
-message = response.text
-msg = create_email()
-msg.attach(MIMEText(message))
-send_email()
