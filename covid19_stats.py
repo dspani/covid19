@@ -78,6 +78,8 @@ def read_and_parse(jdata):
 def output_to_string(parsed_data):
     string = ""
     string += "Country: "+str(parsed_data[0])
+    if parsed_data[2] != "":
+        string += "\nState: " + str(parsed_data[2])
     string += "\nConfirmed cases: "+str(parsed_data[7])
     string += "\nTotal death: "+str(parsed_data[8])
     string += "\nTotal recovered: "+str(parsed_data[9])
@@ -110,7 +112,7 @@ def temp():
     return output_to_string(parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z"))
 
 
-def send_text(data):
+def send_text(string):
     sns = boto3.client(
         'sns',
         aws_access_key_id=access_key,
@@ -118,21 +120,31 @@ def send_text(data):
         region_name="us-west-2")
 
     topic_arn = text_ARN
-    message = output_to_string
+    message = string
     sns.publish(Message=message, TopicArn=topic_arn)
     # sns.publish(PhoneNumber="+", Message=temp())
 
 
-def send_email(data):
+def send_email(string):
+
     sns = boto3.client(
         'sns',
         aws_access_key_id=access_key,
         aws_secret_access_key=secret_key,
         region_name="us-west-2")
+    today = date.today()
 
+    # dd/mm/YY
+    today = today.strftime("%m/%d/%Y")
+    subject = 'Coronavirus stats for ' + today
     topic_arn = email_ARN
-    html_message = output_to_html(data)
-    sns.publish(Message=html_message, TopicArn=topic_arn)
+    # html_message = output_to_html(data)
+    html_message = string
+    sns.publish(
+        TopicArn=topic_arn,
+        Message=html_message,
+        Subject=subject
+    )
 
 
 def main():
@@ -149,13 +161,16 @@ def main():
 
     response = requests.request("GET", URL, headers=headers, data=payload)
 
+    fname = "Live-By-Country-All-Status.json"
+
     with open("./json/" + fname) as jfile:
         jdata = json.load(jfile)
         parsed_data = read_and_parse(jdata)
-        print(parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z"))
+        # print(parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z"))
+        string = output_to_string(parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z"))
 
-    # send_text(parsed_data)
-    send_email(parsed_data)
+    send_text(string)
+    send_email(string)
 
 
 
