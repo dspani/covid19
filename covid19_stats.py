@@ -123,26 +123,6 @@ def send_text(data):
     # sns.publish(PhoneNumber="+", Message=temp())
 
 
-def add_sub():
-    sns = boto3.client(
-        'sns',
-        aws_access_key_id=access_key,
-        aws_secret_access_key=secret_key,
-        region_name="us-west-2")
-    print("Got here")
-    response = sns.subscribe(
-        TopicArn=text_ARN,
-        Protocol='sms',
-        Endpoint='+14253270404',
-        Attributes={
-            'string': 'string'
-        },
-        ReturnSubscriptionArn=True | False
-    )
-    print(response)
-    print("What")
-
-
 def send_email(data):
     sns = boto3.client(
         'sns',
@@ -161,7 +141,6 @@ def main():
     # jdata = request.json()
 
     ## Use JSON file
-    send_text()
 
     fname = "Live-By-Country-All-Status.json"
 
@@ -176,10 +155,11 @@ def main():
         print(parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z"))
 
     # send_text(parsed_data)
-    # send_email(parsed_data)
-    add_sub()
+    send_email(parsed_data)
 
 
+
+main()
 
 
 
