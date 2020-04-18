@@ -6,8 +6,8 @@ import boto3
 import parse_utility
 
 URL = "https://api.covid19api.com/dayone/country/united-states/status/confirmed"
-text_ARN = 'arn:aws:sns:us-west-2:737044771362:covid'
-email_ARN = 'arn:aws:sns:us-west-2:737044771362:covid-email'
+text_ARN = 'arn:aws:sns:us-east-1:737044771362:covid_text'
+email_ARN = 'arn:aws:sns:us-east-1:737044771362:covid_email'
 access_key = 'AKIAJJEGR2NACIGNQFMA'
 secret_key = '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'
 
@@ -18,7 +18,7 @@ def send_text(parsed_data):
         'sns',
         aws_access_key_id=access_key,
         aws_secret_access_key=secret_key,
-        region_name="us-west-2")
+        region_name="us-east-1")
 
     ## Message contains info in plain text
     message = parse_utility.output_to_string(parsed_data)
@@ -33,7 +33,7 @@ def send_email(parsed_data):
         'sns',
         aws_access_key_id=access_key,
         aws_secret_access_key=secret_key,
-        region_name="us-west-2")
+        region_name="us-east-1")
 
     ## Date format: DD/MM/YY
     today = date.today()
