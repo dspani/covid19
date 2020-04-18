@@ -12,7 +12,7 @@
 <input type=text name=name>
 <p>Email: </p>  
 <input type=text name=email>
-<p>Phone number: </p>  
+<p>Phone number with +1: </p>
 <input type=text name=phone>
 <p></p>  
 <input type = "submit" value = "Submit">

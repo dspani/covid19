@@ -1,6 +1,7 @@
 print("php has executed hook.py  ..........")
 import sys
 import boto3
+import re
 
 # sys.argv[0] file path
 # sys.argv[1] name
@@ -16,9 +17,11 @@ def main():
     #out = open("/stuff/out","w",encoding="utf-8")
     #out.write(str(sys.argv[2])+"\n")
     #out.write(str(sys.argv[3])+"\n")
-    
+    check_email(sys.argv[2])
     if sys.argv[2] != '':
         add_email(sys.argv[2])
+
+    sys.argv[3] = check_phone(sys.argv[3])
     if sys.argv[3] != '':
         add_text(sys.argv[3])
 
@@ -28,7 +31,21 @@ def main():
 
 
 def check_phone(phone_number):
+    # check if phone number is correct format
     length = len(phone_number)
+
+    if length == 12:
+        if phone_number[0] == '+' and phone_number[1] ==  '1':
+            return phone_number
+    # phone number without +1
+    elif length == 10:
+        new_phone = '+1' + phone_number
+        return new_phone
+    # number with 1 but no +
+    elif length == 11 and phone_number[0] == '1':
+        new_phone = '+' + phone_number
+        return new_phone
+    # check if phone number is correct format
 
 
 def add_text(phone_number):
@@ -58,11 +75,19 @@ def add_text(phone_number):
     sns.publish(
         PhoneNumber=phone_number,
         # TODO: Let user know about opt-in, opt-out as well
-        Message='Welcome to COVID-19 daily alerts!\n To opt-out of daily messages reply STOP',
+        Message='Welcome to COVID-19 daily alerts!\nTo opt-out of daily updates reply STOP',
         #TopicArn=text_ARN,
         #Endpoint=phone_number,
         #Protocol='sms'
     )
+
+
+def check_email(email):
+    regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+    if (re.search(regex, email)):
+        return email
+    else:
+        return ''
 
 
 def add_email(email):
