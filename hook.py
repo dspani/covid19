@@ -7,16 +7,16 @@ import re
 # sys.argv[1] name
 # sys.argv[2] email
 # sys.argv[3] phone number
-
+# sys.argv[4]
 text_ARN = 'arn:aws:sns:us-east-1:737044771362:covid_text'
 email_ARN = 'arn:aws:sns:us-east-1:737044771362:covid_email'
 access_key = 'AKIAJJEGR2NACIGNQFMA'
 secret_key = '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'
 
 def main():
-    #out = open("/stuff/out","w",encoding="utf-8")
-    #out.write(str(sys.argv[2])+"\n")
-    #out.write(str(sys.argv[3])+"\n")
+    # out = open("/stuff/out","w",encoding="utf-8")
+    # out.write(str(sys.argv[2])+"\n")
+    # out.write(str(sys.argv[3])+"\n")
     check_email(sys.argv[2])
     if sys.argv[2] != '':
         add_email(sys.argv[2])
@@ -26,8 +26,8 @@ def main():
         add_text(sys.argv[3])
 
     print("code execution: successful")
-    #out.write("code execution: successful")
-    #out.close()
+    # out.write("code execution: successful")
+    # out.close()
 
 
 def check_phone(phone_number):
@@ -35,7 +35,7 @@ def check_phone(phone_number):
     length = len(phone_number)
 
     if length == 12:
-        if phone_number[0] == '+' and phone_number[1] ==  '1':
+        if phone_number[0] == '+' and phone_number[1] == '1':
             return phone_number
     # phone number without +1
     elif length == 10:
@@ -45,6 +45,8 @@ def check_phone(phone_number):
     elif length == 11 and phone_number[0] == '1':
         new_phone = '+' + phone_number
         return new_phone
+    else:
+        return ''
     # check if phone number is correct format
 
 
@@ -57,25 +59,26 @@ def add_text(phone_number):
         aws_secret_access_key=secret_key,
         region_name="us-east-1")
 
-
     response = sns.check_if_phone_number_is_opted_out(
         phoneNumber=phone_number
     )
-    if not response:
+    if not response[0]:
         sns.subscribe(
             TopicArn=text_ARN,
             Protocol='sms',
             Endpoint=phone_number
-        )
+            )
     else:
-        sns.opt_in_phone_number(
-            phoneNumber=phone_number
-        )
+        try:
+            sns.opt_in_phone_number(
+                phoneNumber=phone_number
+            )
+        except Exception as e:
+            print('You have opted-out within 30 days\nPlease wait 30 days to opt back in.')
 
     sns.publish(
         PhoneNumber=phone_number,
-        # TODO: Let user know about opt-in, opt-out as well
-        Message='Welcome to COVID-19 daily alerts!\nTo opt-out of daily updates reply STOP',
+        Message=sys.argv[1] + ', Welcome to COVID-19 daily alerts!\nTo opt-out of daily updates reply STOP',
         #TopicArn=text_ARN,
         #Endpoint=phone_number,
         #Protocol='sms'

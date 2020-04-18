@@ -1,13 +1,14 @@
 import json
+import requests
 from datetime import date
-
 import boto3
-
 import parse_utility
+import datetime
 
-URL = "https://api.covid19api.com/dayone/country/united-states/status/confirmed"
+base_URL = "https://api.covid19api.com/total/country/united-states"
 text_ARN = 'arn:aws:sns:us-east-1:737044771362:covid_text'
 email_ARN = 'arn:aws:sns:us-east-1:737044771362:covid_email'
+sk_arn = 'arn:aws:sns:us-east-1:737044771362:covid_south_korea'
 access_key = 'AKIAJJEGR2NACIGNQFMA'
 secret_key = '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'
 
@@ -35,7 +36,7 @@ def send_email(parsed_data):
         aws_secret_access_key=secret_key,
         region_name="us-east-1")
 
-    ## Date format: DD/MM/YY
+    ## Date format: MM/DD/YY
     today = date.today()
     today = today.strftime("%m/%d/%Y")
 
@@ -58,17 +59,29 @@ def main():
     ## Use API
     # request = requests.get(URL)
     # jdata = request.json()
+    ## Use API
+    today = date.today()
+    yesterday = today - datetime.timedelta(days=1)
+    yesterday = yesterday.strftime("%Y-%m-%d")
+    print(today)
+    url = base_URL
+    request = requests.get(url)
+    jdata = request.json()
+    parsed_data = parse_utility.read_and_parse(jdata)
+    string = parsed_data.get("-").get(yesterday + "T00:00:00Z")    ## Use JSON file
 
-    ## Use JSON file
     fname = "Live-By-Country-All-Status.json"
-
+    today = date.today()
+    ''''
     with open("./json/" + fname) as jfile:
         jdata = json.load(jfile)
         parsed_data = parse_utility.read_and_parse(jdata)
-        string = parse_utility.output_to_string(parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z"))
-
-    send_text(string)
+        string = parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z")
+    '''
+    # send_text(string)
     send_email(string)
 
 
 main()
+
+
