@@ -1,21 +1,22 @@
 
 import json
 import requests
-import smtplib
+
 import boto3
 from datetime import date
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+from botocore.exceptions import ClientError
+
 
 # request = requests.get("https://api.covid19api.com/live/country/united-states")
 # print(request.text)
 
-PORT = 587
-EMAIL = "coronavirusapi@gmail.com"
-PASSWORD = "s+&V)4$V[q"
-send_to = "duncanws@hotmail.com"
-URL = "https://api.covid19api.com/dayone/country/united-states/status/confirmed"
 
+URL = "https://api.covid19api.com/dayone/country/united-states/status/confirmed"
+text_ARN = 'arn:aws:sns:us-west-2:737044771362:covid'
+email_ARN = 'arn:aws:sns:us-west-2:737044771362:covid-email'
+access_key = 'AKIAJJEGR2NACIGNQFMA'
+secret_key = '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'
+from_email = 'coronavirusapi@gmail.com'
 
 '''
 
@@ -46,6 +47,7 @@ index       data
 10          Active
 11          Date
 '''
+
 
 def read_and_parse(jdata):
     data_dict = {}
@@ -84,24 +86,73 @@ def output_to_string(parsed_data):
     return string
 
 
-def create_email():
-    today = date.today().strftime("%m/%d/%Y")
-    subject = "Coronavirus Stats for: " + today
-    content = MIMEMultipart()
-    content['From'] = EMAIL
-    content['To'] = send_to
-    content['Subject'] = subject
-    return content
+def output_to_html(parsed_data):
+    string = "<p><strong>COVID-19: Daily case report</strong></p>"
+    string += "\n<p>Country:</p>" + str(parsed_data[0])
+    if str(parsed_data[2]) != "":
+        string += "\n<p>Province:</p>" + str(parsed_data[2])
+    string += "\n<p>Date:</p>" + str(parsed_data[11])[:10]
+    string += "\n<p>Confirmed cases:</p>" + str(parsed_data[7])
+    string += "\n<p>Deaths:</p>" + str(parsed_data[8])
+    string += "\n<p>Recovered:</p>" + str(parsed_data[9])
+    string += "\n<p>Active:</p>" + str(parsed_data[10])
+    string += "\n<p>Data retrieved by <a href=\"https://documenter.getpostman.com/view/10808728/SzS8rjbc?version=latest#7934d316-f751-4914-9909-39f1901caeb8\">Postman</a></p>\n"
+    return string
 
 
-def send_email():
-    server = smtplib.SMTP('smtp.gmail.com', PORT)
-    server.starttls()
-    server.login(EMAIL, PASSWORD)
-    text = msg.as_string()
-    server.sendmail(EMAIL, send_to, text)
-    server.quit()
+def temp():
+    fname = "Live-By-Country-All-Status.json"
 
+    with open("./json/" + fname) as jfile:
+        jdata = json.load(jfile)
+        parsed_data = read_and_parse(jdata)
+        print(parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z"))
+    return output_to_string(parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z"))
+
+
+def send_text(data):
+    sns = boto3.client(
+        'sns',
+        aws_access_key_id=access_key,
+        aws_secret_access_key=secret_key,
+        region_name="us-west-2")
+
+    topic_arn = text_ARN
+    message = output_to_string
+    sns.publish(Message=message, TopicArn=topic_arn)
+    # sns.publish(PhoneNumber="+", Message=temp())
+
+
+def add_sub():
+    sns = boto3.client(
+        'sns',
+        aws_access_key_id=access_key,
+        aws_secret_access_key=secret_key,
+        region_name="us-west-2")
+    print("Got here")
+    response = sns.subscribe(
+        TopicArn=text_ARN,
+        Protocol='sms',
+        Endpoint='+14253270404',
+        Attributes={
+            'string': 'string'
+        },
+        ReturnSubscriptionArn=True | False
+    )
+    print(response)
+    print("What")
+
+
+def send_email(data):
+    sns = boto3.client(
+        'sns',
+        aws_access_key_id=access_key,
+        aws_secret_access_key=secret_key,
+        region_name="us-west-2")
+
+    topic_arn = email_ARN
+    html_message = output_to_html(data)
+    sns.publish(Message=html_message, TopicArn=topic_arn)
 
 
 def main():
@@ -110,6 +161,8 @@ def main():
     # jdata = request.json()
 
     ## Use JSON file
+    send_text()
+
     fname = "Live-By-Country-All-Status.json"
 
     headers = {}
@@ -122,27 +175,11 @@ def main():
         parsed_data = read_and_parse(jdata)
         print(parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z"))
 
-    message = response.text
-    msg = create_email()
-    msg.attach(MIMEText(message))
-    send_email()
+    # send_text(parsed_data)
+    # send_email(parsed_data)
+    add_sub()
 
-def temp():
-    fname = "Live-By-Country-All-Status.json"
 
-    with open("./json/" + fname) as jfile:
-        jdata = json.load(jfile)
-        parsed_data = read_and_parse(jdata)
-        print(parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z"))
-    return output_to_string(parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z"))
 
-def sendText():
-    sns = boto3.client(
-        'sns',
-        aws_access_key_id="",
-        aws_secret_access_key="",
-        region_name="us-east-1")
 
-    sns.publish(PhoneNumber="+", Message=temp())
 
-sendText()
