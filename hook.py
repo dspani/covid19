@@ -32,6 +32,13 @@ def add_text(phone_number):
         Endpoint=phone_number
     )
 
+    sns.publish(
+        Message='Welcome to COVID-19 daily alerts!',
+        TopicArn=text_ARN,
+        Endpoint=phone_number,
+        Protocol='sms'
+    )
+
 
 def add_email(email):
     sns = boto3.client(
