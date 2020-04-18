@@ -1,0 +1,25 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Covid-19 Updates</title>
+  <form>
+  <h2> Sign up for daily updates on Covid-19 in the US </h2>
+  <p>Name: <input type="text" name="name"></p>
+  <p>Email: <input type="text" name="email"></p>
+  <p>Phone Number: <input type="text" name="phone"></p>
+  <input type="submit" name="submitbutton" value="SUBMIT">
+  </form>
+  <link rel="stylesheet" href="css/styles.css?v=1.0">
+
+</head>
+
+<body>
+<?PHP
+echo shell_exec("python3 form_data.py 'name' 'email' 'phone'");
+?>
+  
+</body>
+</html>
