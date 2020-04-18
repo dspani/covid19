@@ -1,3 +1,4 @@
+print("php has executed hook.py  ..........")
 import sys
 import boto3
 
@@ -12,12 +13,18 @@ access_key = 'AKIAJJEGR2NACIGNQFMA'
 secret_key = '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'
 
 def main():
+    #out = open("/stuff/out","w",encoding="utf-8")
+    #out.write(str(sys.argv[2])+"\n")
+    #out.write(str(sys.argv[3])+"\n")
+    
     if sys.argv[2] != '':
         add_email(sys.argv[2])
     if sys.argv[3] != '':
         add_text(sys.argv[3])
 
-
+    print("code execution: successful")
+    #out.write("code execution: successful")
+    #out.close()
 
 def add_text(phone_number):
     sns = boto3.client(
@@ -33,10 +40,12 @@ def add_text(phone_number):
     )
 
     sns.publish(
+        PhoneNumber=phone_number,
+        #TODO: Let user know about opt-in, opt-out as well
         Message='Welcome to COVID-19 daily alerts!',
-        TopicArn=text_ARN,
-        Endpoint=phone_number,
-        Protocol='sms'
+        #TopicArn=text_ARN,
+        #Endpoint=phone_number,
+        #Protocol='sms'
     )
 
 
@@ -52,6 +61,5 @@ def add_email(email):
         Protocol='email',
         Endpoint=email
     )
-
 
 main()

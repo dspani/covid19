@@ -10,5 +10,6 @@
     echo "Phone : ";
     echo $_POST[phone];
     echo "<br>";
-    shell_exec("python3 /stuff/form_data.py $_POST[name] $_POST[email] $_POST[phone] ");
+    //echo shell_exec("python3 /stuff/hook.py name1 name2 name3");
+    echo shell_exec("python3 /stuff/hook.py $_POST[name] $_POST[email] $_POST[phone] ");
 ?>
