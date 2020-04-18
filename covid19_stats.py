@@ -16,7 +16,6 @@ text_ARN = 'arn:aws:sns:us-west-2:737044771362:covid'
 email_ARN = 'arn:aws:sns:us-west-2:737044771362:covid-email'
 access_key = 'AKIAJJEGR2NACIGNQFMA'
 secret_key = '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'
-from_email = 'coronavirusapi@gmail.com'
 
 '''
 
