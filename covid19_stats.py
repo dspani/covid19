@@ -5,7 +5,7 @@ import boto3
 import parse_utility
 import datetime
 
-base_URL = "https://api.covid19api.com/total/country/united-states"
+base_URL = "https://api.covid19api.com/total/country/"
 text_ARN = 'arn:aws:sns:us-east-1:737044771362:covid_text'
 email_ARN = 'arn:aws:sns:us-east-1:737044771362:covid_email'
 sk_arn = 'arn:aws:sns:us-east-1:737044771362:covid_south_korea'
@@ -14,7 +14,7 @@ secret_key = 'E2FvJb0Cw4mUTLr77GUTPoNC802H6TW0lGBXooiG'
 
 
 ## Sends message
-def send_text(parsed_data):
+def send_text(arn, parsed_data):
     sns = boto3.client(
         'sns',
         aws_access_key_id=access_key,
@@ -24,12 +24,12 @@ def send_text(parsed_data):
     ## Message contains info in plain text
     message = parse_utility.output_to_string(parsed_data)
     ## Send to subscribers
-    sns.publish(Message=message, TopicArn=text_ARN)
+    sns.publish(Message=message, TopicArn=arn)
     # sns.publish(PhoneNumber="+", Message=temp())
 
 
 ## Sends email
-def send_email(parsed_data):
+def send_email(arn, parsed_data):
     sns = boto3.client(
         'sns',
         aws_access_key_id=access_key,
@@ -49,13 +49,12 @@ def send_email(parsed_data):
     html_message = parse_utility.output_to_string(parsed_data)
     ## Push to subscribers
     sns.publish(
-        TopicArn=email_ARN,
+        TopicArn=arn,
         Message=html_message,
         Subject=subject
     )
 
-
-def main():
+def united_states():
     ## Use API
     # request = requests.get(URL)
     # jdata = request.json()
@@ -64,11 +63,11 @@ def main():
     yesterday = today - datetime.timedelta(days=1)
     yesterday = yesterday.strftime("%Y-%m-%d")
     print(today)
-    url = base_URL
+    url = base_URL + 'united-states'
     request = requests.get(url)
     jdata = request.json()
     parsed_data = parse_utility.read_and_parse(jdata)
-    string = parsed_data.get("-").get(yesterday + "T00:00:00Z")    ## Use JSON file
+    string = parsed_data.get("-").get(yesterday + "T00:00:00Z")  ## Use JSON file
 
     fname = "Live-By-Country-All-Status.json"
     today = date.today()
@@ -78,8 +77,40 @@ def main():
         parsed_data = parse_utility.read_and_parse(jdata)
         string = parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z")
     '''
-    # send_text(string)
-    send_email(string)
+    send_text(text_ARN, string)
+    send_email(email_ARN, string)
+
+
+def south_korea():
+    ## Use API
+    # request = requests.get(URL)
+    # jdata = request.json()
+    ## Use API
+    today = date.today()
+    yesterday = today - datetime.timedelta(days=1)
+    yesterday = yesterday.strftime("%Y-%m-%d")
+    print(today)
+    url = base_URL + 'korea-south'
+    request = requests.get(url)
+    jdata = request.json()
+    parsed_data = parse_utility.read_and_parse(jdata)
+    string = parsed_data.get("-").get(yesterday + "T00:00:00Z")  ## Use JSON file
+
+    fname = "Live-By-Country-All-Status.json"
+    today = date.today()
+    ''''
+    with open("./json/" + fname) as jfile:
+        jdata = json.load(jfile)
+        parsed_data = parse_utility.read_and_parse(jdata)
+        string = parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z")
+    '''
+    send_text(sk_arn, string)
+    send_email(sk_arn, string)
+
+
+def main():
+    united_states()
+    south_korea()
 
 
 main()
