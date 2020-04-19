@@ -6,15 +6,16 @@ import parse_utility
 import datetime
 
 base_URL = "https://api.covid19api.com/total/country/"
-text_ARN = 'arn:aws:sns:us-east-1:737044771362:covid_text'
-email_ARN = 'arn:aws:sns:us-east-1:737044771362:covid_email'
-sk_arn = 'arn:aws:sns:us-east-1:737044771362:covid_south_korea'
+# us_arn = 'arn:aws:sns:us-east-1:737044771362:covid_united_states'
+# us_text = 'arn:aws:sns:us-east-1:737044771362:covid_united_states_text'
+# sk_arn = 'arn:aws:sns:us-east-1:737044771362:covid_south_korea'
 access_key = 'AKIAJJEGR2NACIGNQFMA'
 secret_key = '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'
 
 
 ## Sends message
 def send_text(arn, parsed_data):
+    print('text function: ' + arn)
     sns = boto3.client(
         'sns',
         aws_access_key_id=access_key,
@@ -24,12 +25,16 @@ def send_text(arn, parsed_data):
     ## Message contains info in plain text
     message = parse_utility.output_to_string(parsed_data)
     ## Send to subscribers
-    sns.publish(Message=message, TopicArn=arn)
+    '''sns.publish(
+        Message=message,
+        TopicArn=arn
+    )'''
     # sns.publish(PhoneNumber="+", Message=temp())
 
 
 ## Sends email
 def send_email(arn, parsed_data):
+    print('email function ' + arn)
     sns = boto3.client(
         'sns',
         aws_access_key_id=access_key,
@@ -48,13 +53,13 @@ def send_email(arn, parsed_data):
     ## html_message contains info in plain text
     html_message = parse_utility.output_to_string(parsed_data)
     ## Push to subscribers
-    sns.publish(
+    '''sns.publish(
         TopicArn=arn,
         Message=html_message,
         Subject=subject
-    )
+    )'''
 
-def united_states():
+def united_states(arns):
     ## Use API
     # request = requests.get(URL)
     # jdata = request.json()
@@ -62,7 +67,6 @@ def united_states():
     today = date.today()
     yesterday = today - datetime.timedelta(days=1)
     yesterday = yesterday.strftime("%Y-%m-%d")
-    print(today)
     url = base_URL + 'united-states'
     request = requests.get(url)
     jdata = request.json()
@@ -77,11 +81,13 @@ def united_states():
         parsed_data = parse_utility.read_and_parse(jdata)
         string = parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z")
     '''
-    send_text(text_ARN, string)
-    send_email(email_ARN, string)
+    print("email arn: " + arns.get('email'))
+    print("text arn: " + arns.get('text'))
+    send_text(arns.get('text'), string)
+    send_email(arns.get('email'), string)
 
 
-def south_korea():
+def south_korea(arn):
     ## Use API
     # request = requests.get(URL)
     # jdata = request.json()
@@ -104,13 +110,31 @@ def south_korea():
         parsed_data = parse_utility.read_and_parse(jdata)
         string = parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z")
     '''
-    send_text(sk_arn, string)
-    send_email(sk_arn, string)
+
+    #send_text(arn, string)
+    send_email(arn, string)
 
 
 def main():
-    united_states()
-    south_korea()
+    sns = boto3.client(
+        'sns',
+        aws_access_key_id=access_key,
+        aws_secret_access_key=secret_key,
+        region_name="us-east-1")
+
+    response = sns.list_topics()
+    topics = response.get('Topics')
+
+    # since us has arn for text and email
+    us_arns = {}
+    for arn in list(topics):
+        if 'united_states_text' in arn.get("TopicArn"):
+            us_arns['text'] = arn.get("TopicArn")
+        elif 'united_states' in arn.get("TopicArn"):
+            us_arns['email'] = arn.get("TopicArn")
+        elif 'south_korea' in arn.get("TopicArn"):
+            south_korea(arn.get("TopicArn"))
+    united_states(us_arns)
 
 
 main()

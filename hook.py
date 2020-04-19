@@ -7,9 +7,10 @@ import re
 # sys.argv[1] name
 # sys.argv[2] email
 # sys.argv[3] phone number
-# sys.argv[4]
-text_ARN = 'arn:aws:sns:us-east-1:737044771362:covid_text'
-email_ARN = 'arn:aws:sns:us-east-1:737044771362:covid_email'
+# sys.argv[4] country
+us_email = 'arn:aws:sns:us-east-1:737044771362:covid_united_states'
+us_text = 'arn:aws:sns:us-east-1:737044771362:covid_united_states_text'
+sk_arn = 'arn:aws:sns:us-east-1:737044771362:covid_south_korea'
 access_key = 'AKIAJJEGR2NACIGNQFMA'
 secret_key = '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'
 
@@ -62,9 +63,9 @@ def add_text(phone_number):
     response = sns.check_if_phone_number_is_opted_out(
         phoneNumber=phone_number
     )
-    if not response[0]:
+    if not response['isOptedOut']:
         sns.subscribe(
-            TopicArn=text_ARN,
+            TopicArn=us_text,
             Protocol='sms',
             Endpoint=phone_number
             )
@@ -101,7 +102,7 @@ def add_email(email):
         region_name="us-east-1")
 
     sns.subscribe(
-        TopicArn=email_ARN,
+        TopicArn=us_email,
         Protocol='email',
         Endpoint=email
     )
