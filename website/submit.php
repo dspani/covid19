@@ -50,7 +50,7 @@
             //# sys.argv[4] email
             //# sys.argv[5] phone
             //echo "//shell_exec disabled for testing//";
-            echo shell_exec("python3 /stuff/hook.py '$user_name' '$_POST[type] '$_POST[country]' '$user_email' '$user_phone' ");
+            echo shell_exec("python3 /stuff/hook.py '$user_name' '$_POST[type]' '$_POST[country]' '$user_email' '$user_phone' ");
             ?>
         </p>
     </div>
