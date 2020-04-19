@@ -2,7 +2,7 @@
 # Covid 19 updates
 ## Goals: 
 > The goals of this project were for us to gain knowledge in the cloud while providing a relevant and useful service.
-> We also wanted to provide current information on the growing epidemic so people can acknowledge the danger that is the coronavirus.
+> We wanted to provide current information on the growing epidemic and every once a day, showed official information through the easy and simple notifications emails or/and text messages so people can acknowledge the danger that is the coronavirus.
 > 
 
 ## Desired User Experience:
@@ -30,6 +30,7 @@
 * Connecting the Seperate Programs: connecting the front-end to the python scripts to send confirmation emails took a lot of time
 * Building the Website From Scratch: since none of us had any experience working with HTML, CSS, and PHP, we had to learn all the languages from scratch and in a timecrunch to make sure we could test it. building the website and connecting it to the backend we probably the largest challenge and took the most time.
 * Creating the Crontab Script: the crontab script took some time to create, we had no idea how to use crontab so we had to take some time to learn how to set it up and the syntax behnd it.
+* Future Work: we are planning to add more countries, states, and languages.
 
 
 ## Contributors:
