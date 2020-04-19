@@ -14,7 +14,7 @@ base_URL = "https://api.covid19api.com/total/country/"
 
 ## Sends message
 def send_text(arn, parsed_data):
-    print('text function: ' + arn)
+
     sns = boto3.client(
         'sns',
         aws_access_key_id=access_key,
@@ -82,8 +82,8 @@ def united_states(arns):
     '''
     print("email arn: " + arns.get('email'))
     print("text arn: " + arns.get('text'))
-    send_text(arns.get('text'), string)
-    send_email(arns.get('email'), string)
+    send_text(arns.get('us_text'), string)
+    send_email(arns.get('us_email'), string)
 
 
 def south_korea(arns):
@@ -94,7 +94,7 @@ def south_korea(arns):
     today = date.today()
     yesterday = today - datetime.timedelta(days=1)
     yesterday = yesterday.strftime("%Y-%m-%d")
-    print(today)
+
     url = base_URL + 'korea-south'
     request = requests.get(url)
     jdata = request.json()
@@ -102,8 +102,8 @@ def south_korea(arns):
     string = parsed_data.get("-").get(yesterday + "T00:00:00Z")  ## Use JSON file
 
 
-    send_text(arns.get('text'), string)
-    send_email(arns.get('email'), string)
+    send_text(arns.get('sk_text'), string)
+    send_email(arns.get('sk_email'), string)
 
 
 def main():
@@ -157,8 +157,7 @@ try:
     # TODO:remove ln159 & ln160 after testing
     print(access_key)
     print(secret_key)
-    if sys.argv[1] and sys.argv[2]:
-        main()
+    main()
 except Exception as e:
     print("No Access Keys")
 

@@ -11,15 +11,10 @@ import boto3
 # sys.argv[3] country
 # sys.argv[4] email
 # sys.argv[5] phone
-access_key = ''
-secret_key = ''
 
 
 def main():
-    ini = open("/stuff/ini", "r", encoding="utf-8")
-    access_key = ini.readline().strip()
-    secret_key = ini.readline().strip()
-    ini.close()
+
 
     # delivery will either be 'text', 'email', or 'both'
     name = sys.argv[1]
@@ -109,7 +104,7 @@ def add_text(phone_number, arns, country, name):
             )
             return True
         except Exception as e:
-            print('You have opted-out within 30 days\nPlease wait 30 days to opt back in.')
+            print('Your phone number has opted-out within 30 days\nPlease wait 30 days to opt back in.')
             return False
 
 
@@ -156,6 +151,8 @@ def get_arns():
 
     # since each country has arn for text and email
     arns = {}
+    print(response)
+    print(topics)
     for arn in list(topics):
         if 'united_states_text' in arn.get("TopicArn"):
             arns['us_text'] = arn.get("TopicArn")
