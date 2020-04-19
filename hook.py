@@ -1,4 +1,4 @@
-print("php has executed hook.py  ..........")
+#print("php has executed hook.py  ..........")
 import sys
 import boto3
 import re
@@ -26,7 +26,7 @@ def main():
     if sys.argv[3] != '':
         add_text(sys.argv[3])
 
-    print("code execution: successful")
+    print("Successfully subscribed to COVID-19 update")
     # out.write("code execution: successful")
     # out.close()
 
