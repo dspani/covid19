@@ -1,4 +1,4 @@
-# Created for UWB Hacks the Cloud 2020
+# Created for UWB Hacks the Cloud 2020 [uwbhacks.com](https://uwbhacks.com/)
 # Covid 19 updates
 ## Goals: 
 > The goals of this project were for us to gain knowledge in the cloud while providing a relevant and useful service.
