@@ -60,9 +60,8 @@ def output_to_string(parsed_data):
     if parsed_data[2] != "":
         string += "\nState: " + str(parsed_data[2])
     string += "\nConfirmed cases: "+str(parsed_data[7])
-    string += "\nTotal death: "+str(parsed_data[8])
+    string += "\nTotal deaths: "+str(parsed_data[8])
     string += "\nTotal recovered: "+str(parsed_data[9])
-    string += "\nTotal active: "+str(parsed_data[10])
     string += "\n\nData date: +"+str(parsed_data[11])[:10]
     return string
 
@@ -77,6 +76,5 @@ def output_to_html(parsed_data):
     string += "\n<p>Confirmed cases:</p>" + str(parsed_data[7])
     string += "\n<p>Deaths:</p>" + str(parsed_data[8])
     string += "\n<p>Recovered:</p>" + str(parsed_data[9])
-    string += "\n<p>Active:</p>" + str(parsed_data[10])
     string += "\n<p>Data retrieved by <a href=\"https://documenter.getpostman.com/view/10808728/SzS8rjbc?version=latest#7934d316-f751-4914-9909-39f1901caeb8\">Postman</a></p>\n"
     return string

@@ -3,14 +3,13 @@ import sys
 import boto3
 import re
 
+### SUBJECT TO CHANGE ###
 # sys.argv[0] file path
 # sys.argv[1] name
-# sys.argv[2] email
-# sys.argv[3] phone number
-# sys.argv[4] country
-us_email = 'arn:aws:sns:us-east-1:737044771362:covid_united_states'
-us_text = 'arn:aws:sns:us-east-1:737044771362:covid_united_states_text'
-sk_arn = 'arn:aws:sns:us-east-1:737044771362:covid_south_korea'
+# sys.argv[2] delivery option
+# sys.argv[3] country
+# sys.argv[4] email
+# sys.argv[5] phone
 access_key = 'AKIAJJEGR2NACIGNQFMA'
 secret_key = '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'
 
@@ -18,13 +17,24 @@ def main():
     # out = open("/stuff/out","w",encoding="utf-8")
     # out.write(str(sys.argv[2])+"\n")
     # out.write(str(sys.argv[3])+"\n")
-    check_email(sys.argv[2])
-    if sys.argv[2] != '':
-        add_email(sys.argv[2])
+    # delivery will either be 'text', 'email', or 'both'
+    name = sys.argv[1]
+    delivery = sys.argv[2]
+    country = sys.argv[3]
+    email = sys.argv[4]
+    phone = sys.argv[5]
 
-    sys.argv[3] = check_phone(sys.argv[3])
-    if sys.argv[3] != '':
-        add_text(sys.argv[3])
+    arns = get_arns()
+
+    if delivery == 'email' or delivery == 'both':
+        email = check_email(email)
+        if email != '':
+            add_email(email, arns, delivery)
+
+    if delivery == 'text' or delivery == 'both':
+        phone = check_phone(phone)
+        if phone != '':
+            add_text(phone, arns, country, name)
 
     print("Successfully subscribed to COVID-19 update")
     # out.write("code execution: successful")
@@ -35,6 +45,7 @@ def check_phone(phone_number):
     # check if phone number is correct format
     length = len(phone_number)
 
+    # correctly format phone number
     if length == 12:
         if phone_number[0] == '+' and phone_number[1] == '1':
             return phone_number
@@ -48,10 +59,9 @@ def check_phone(phone_number):
         return new_phone
     else:
         return ''
-    # check if phone number is correct format
 
 
-def add_text(phone_number):
+def add_text(phone_number, arns, country, name):
 
     # to check sub status
     sns = boto3.client(
@@ -64,11 +74,19 @@ def add_text(phone_number):
         phoneNumber=phone_number
     )
     if not response['isOptedOut']:
-        sns.subscribe(
-            TopicArn=us_text,
-            Protocol='sms',
-            Endpoint=phone_number
+        if country == 'united-states':
+            sns.subscribe(
+                TopicArn=arns.get('us_text'),
+                Protocol='sms',
+                Endpoint=phone_number
+                )
+        else:
+            sns.subscribe(
+                TopicArn=arns.get('sk_text'),
+                Protocol='sms',
+                Endpoint=phone_number
             )
+
     else:
         try:
             sns.opt_in_phone_number(
@@ -79,7 +97,7 @@ def add_text(phone_number):
 
     sns.publish(
         PhoneNumber=phone_number,
-        Message=sys.argv[1] + ', Welcome to COVID-19 daily alerts!\nTo opt-out of daily updates reply STOP',
+        Message=name + ', Welcome to COVID-19 daily alerts!\nTo opt-out of daily updates reply STOP',
         #TopicArn=text_ARN,
         #Endpoint=phone_number,
         #Protocol='sms'
@@ -94,17 +112,49 @@ def check_email(email):
         return ''
 
 
-def add_email(email):
+def add_email(email, arns, delivery):
     sns = boto3.client(
         'sns',
         aws_access_key_id=access_key,
         aws_secret_access_key=secret_key,
         region_name="us-east-1")
+    if delivery == 'united-states':
+        sns.subscribe(
+            TopicArn=arns.get('us_email'),
+            Protocol='email',
+            Endpoint=email
+        )
+    else:
+        sns.subscribe(
+            TopicArn=arns.get('sk_email'),
+            Protocol='email',
+            Endpoint=email
+        )
 
-    sns.subscribe(
-        TopicArn=us_email,
-        Protocol='email',
-        Endpoint=email
-    )
+
+def get_arns():
+    sns = boto3.client(
+        'sns',
+        aws_access_key_id=access_key,
+        aws_secret_access_key=secret_key,
+        region_name="us-east-1"
+        )
+
+    response = sns.list_topics()
+    topics = response.get('Topics')
+
+    # since us has arn for text and email
+    arns = {}
+    for arn in list(topics):
+        if 'united_states_text' in arn.get("TopicArn"):
+            arns['us_text'] = arn.get("TopicArn")
+        elif 'united_states' in arn.get("TopicArn"):
+            arns['us_email'] = arn.get("TopicArn")
+        elif 'south_korea_text' in arn.get("TopicArn"):
+            arns['sk_text'] = arn.get("TopicArn")
+        elif 'south_korea' in arn.get("TopicArn"):
+            arns['sk_email'] = arn.get("TopicArn")
+
+    return arns
 
 main()
