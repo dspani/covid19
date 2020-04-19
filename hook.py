@@ -111,9 +111,10 @@ def add_text(phone_number, arns, country, name):
             print('You have opted-out within 30 days\nPlease wait 30 days to opt back in.')
             return False
 
+
 def check_email(email):
     regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
-    if (re.search(regex, email)):
+    if re.search(regex, email):
         return email
     else:
         return ''
@@ -152,7 +153,7 @@ def get_arns():
     response = sns.list_topics()
     topics = response.get('Topics')
 
-    # since us has arn for text and email
+    # since each country has arn for text and email
     arns = {}
     for arn in list(topics):
         if 'united_states_text' in arn.get("TopicArn"):

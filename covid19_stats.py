@@ -1,12 +1,13 @@
 import json
+import sys
 import requests
 from datetime import date
 import boto3
 import parse_utility
 import datetime
 
-access_key = 'AKIAJJEGR2NACIGNQFMA'
-secret_key = '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'
+#access_key = 'AKIAJJEGR2NACIGNQFMA'
+#secret_key = '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'
 base_URL = "https://api.covid19api.com/total/country/"
 
 
@@ -139,7 +140,14 @@ def get_arns():
 
     return arns
 
+try:
+    access_key = sys.argv[1]
+    secret_key = sys.argv[2]
+    main()
+except Exception as e:
+    print("No Access Keys")
 
-main()
+
+
 
 
