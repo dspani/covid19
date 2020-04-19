@@ -1,29 +1,28 @@
-
-import requests
+import datetime
 import sys
 from datetime import date
+
 import boto3
+import requests
+
 import parse_utility
-import datetime
 
-
-access_key = ''
-secret_key = ''
+access_key = sys.argv[1]
+secret_key = sys.argv[2]
 base_URL = "https://api.covid19api.com/total/country/"
 
 
 ## Sends message
 def send_text(arn, parsed_data):
-
     sns = boto3.client(
         'sns',
         aws_access_key_id=access_key,
         aws_secret_access_key=secret_key,
         region_name="us-east-1")
 
-    ## Message contains info in plain text
+    # Message contains info in plain text
     message = parse_utility.output_to_string(parsed_data)
-    ## Send to subscribers
+    # Send to subscribers
     sns.publish(
         Message=message,
         TopicArn=arn
@@ -33,7 +32,6 @@ def send_text(arn, parsed_data):
 
 ## Sends email
 def send_email(arn, parsed_data):
-    print('email function ' + arn)
     sns = boto3.client(
         'sns',
         aws_access_key_id=access_key,
@@ -48,8 +46,6 @@ def send_email(arn, parsed_data):
     subject = 'Coronavirus stats for ' + today
 
     ## Email take plain text
-    # html_message = parse_utility.output_to_html(parsed_data)
-    ## html_message contains info in plain text
     html_message = parse_utility.output_to_string(parsed_data)
     ## Push to subscribers
     sns.publish(
@@ -58,10 +54,8 @@ def send_email(arn, parsed_data):
         Subject=subject
     )
 
+
 def united_states(arns):
-    ## Use API
-    # request = requests.get(URL)
-    # jdata = request.json()
     ## Use API
     today = date.today()
     yesterday = today - datetime.timedelta(days=1)
@@ -72,24 +66,19 @@ def united_states(arns):
     parsed_data = parse_utility.read_and_parse(jdata)
     string = parsed_data.get("-").get(yesterday + "T00:00:00Z")  ## Use JSON file
 
-    fname = "Live-By-Country-All-Status.json"
-
     ''''
+    fname = "Live-By-Country-All-Status.json"
     with open("./json/" + fname) as jfile:
         jdata = json.load(jfile)
         parsed_data = parse_utility.read_and_parse(jdata)
         string = parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z")
     '''
-    print("email arn: " + arns.get('email'))
-    print("text arn: " + arns.get('text'))
+
     send_text(arns.get('us_text'), string)
     send_email(arns.get('us_email'), string)
 
 
 def south_korea(arns):
-    ## Use API
-    # request = requests.get(URL)
-    # jdata = request.json()
     ## Use API
     today = date.today()
     yesterday = today - datetime.timedelta(days=1)
@@ -100,7 +89,6 @@ def south_korea(arns):
     jdata = request.json()
     parsed_data = parse_utility.read_and_parse(jdata)
     string = parsed_data.get("-").get(yesterday + "T00:00:00Z")  ## Use JSON file
-
 
     send_text(arns.get('sk_text'), string)
     send_email(arns.get('sk_email'), string)
@@ -118,14 +106,14 @@ def main():
         us_arns['us_email'] = arns.get('us_email')
         us_arns['us_text'] = arns.get('us_text')
 
-
     print(sk_arns)
     print(us_arns)
 
     united_states(us_arns)
     south_korea(sk_arns)
 
-def get_arns(): # FIXXXXX
+
+def get_arns():  # FIXXXXX
     sns = boto3.client(
         'sns',
         aws_access_key_id=access_key,
@@ -150,15 +138,4 @@ def get_arns(): # FIXXXXX
     return arns
 
 
-try:
-    access_key = sys.argv[1]
-    secret_key = sys.argv[2]
-
-    # TODO:remove ln159 & ln160 after testing
-    print(access_key)
-    print(secret_key)
-    main()
-except Exception as e:
-    print("No Access Keys")
-
-
+main()

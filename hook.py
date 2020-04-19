@@ -11,11 +11,18 @@ import boto3
 # sys.argv[3] country
 # sys.argv[4] email
 # sys.argv[5] phone
+#access_key = ''
+#secret_key = ''
+#access_key = "AKIAJJEGR2NACIGNQFMA"
+#secret_key = "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"
+
+ini = open("/stuff/ini", "r", encoding="utf-8")
+access_key = ini.readline().strip()
+secret_key = ini.readline().strip()
+ini.close()
 
 
 def main():
-
-
     # delivery will either be 'text', 'email', or 'both'
     name = sys.argv[1]
     delivery = sys.argv[2]
@@ -104,13 +111,13 @@ def add_text(phone_number, arns, country, name):
             )
             return True
         except Exception as e:
-            print('Your phone number has opted-out within 30 days\nPlease wait 30 days to opt back in.')
+            print('You have opted-out within 30 days\nPlease wait 30 days to opt back in.')
             return False
 
 
 def check_email(email):
     regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
-    if re.search(regex, email):
+    if (re.search(regex, email)):
         return email
     else:
         return ''
@@ -149,10 +156,8 @@ def get_arns():
     response = sns.list_topics()
     topics = response.get('Topics')
 
-    # since each country has arn for text and email
+    # since us has arn for text and email
     arns = {}
-    print(response)
-    print(topics)
     for arn in list(topics):
         if 'united_states_text' in arn.get("TopicArn"):
             arns['us_text'] = arn.get("TopicArn")
