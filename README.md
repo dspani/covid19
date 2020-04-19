@@ -8,7 +8,7 @@
 
 ## Goals: 
 The goals of this project were for us to gain knowledge in the cloud while providing a relevant and useful service.\
-We wanted to provide current information on the growing epidemic and every once a day, showed official information through the easy and simple notifications emails or/and text messages so people can acknowledge the danger that is the coronavirus.
+We wanted to provide current information on the growing epidemic and every once a day, notifications give simple, official information through email or/and text messages so people can acknowledge the danger that is the coronavirus.
 
 
 ## Desired User Experience:
@@ -27,7 +27,7 @@ The user will then begin recieving daily updates for their desired country (curr
 
 [Coronavirus COVID19 API](https://documenter.getpostman.com/view/10808728/SzS8rjbc?version=latest#b07f97ba-24f4-4ebe-ad71-97fa35f3b683) to retrieve data about COVID-19.
 
-[AWS Simple Notification Service (SNS)](https://aws.amazon.com/sns/?whats-new-cards.sort-by=item.additionalFields.postDateTime&whats-new-cards.sort-order=desc) was used to users subscribe to a "Topic" that we created. At certain time, users get notified for the topic they subscribed. In this project, topics are COVID-19 data for each country.
+[AWS Simple Notification Service (SNS)](https://aws.amazon.com/sns/?whats-new-cards.sort-by=item.additionalFields.postDateTime&whats-new-cards.sort-order=desc) was used to users subscribe to a "Topic" that we created. At a certain time, users will get notified for the topic they subscribed. In this project, topics are COVID-19 data for each country and the optional text message topics.
 
 
 [Digital Ocean](https://cloud.digitalocean.com) was used to create a multi-purpose server. Nginx was installed to create and operate the webserver, and our python script that uses boto3 allows us to use AWS SNS. By using cron, we were able to create fully automated notification server for COVID-19 data. 
@@ -36,21 +36,21 @@ The user will then begin recieving daily updates for their desired country (curr
 
 Domain purchased from [Google Domains](https://domains.google.com/), but we use nameservers from Digital Ocean.
 
-The website offers daily coronavirus updates at 12:00 PM through either email, sms messaging, or both. Upon subscribing, the user will receive a confirmation text saying they are subscribed, and a confirmaiton email containing a link in which they can confirm their subscription. Our notification server will then publish the information to the subscibers everyday at the same time.
+The website offers daily coronavirus updates at 12:00 PM through either email, sms messaging, or both. Upon subscribing, the user will receive a confirmation text saying they are subscribed, and a confirmaiton email containing a link in which they can confirm their subscription. Our notification server will then publish the information to the subscibers.
 
 ### Dependencies:
 > - **php7.2-fpm**: Code execution (Front-end) 
 > - **python3**: Main programming language used. (<3.8)
 > - **python3-boto3**: For AWS SNS (this allows users to subscribe our "Topic", and it also allows us to publish to subscribers)
 > - **python3-requests**: For requesting API
-> - **cron**: For schedueled task
+> - **cron**: For scheduled task
 > - **certbot**: For HTTPS certificate
 > - **nginx**: Web server
 
 ## Issues Encountered: 
 - Programming languages: We had not worked a lot with Python before and none of us had worked with HTML, CSS, or PHP before this project so learning the languages in a timecrunch was an issue we encountered. 
 
-    - Learning the boto3 syntax: the boto3 syntax was hard to follow and at the beginning the documentation did not help us too much.
+- Learning the boto3 syntax: the boto3 syntax was hard to follow and at the beginning the documentation did not help us too much.
 
 - Package not being recognized: We had an issue with boto3 not being reconized in the server, if executed with non-user account. The issue was that package was installed locally, so that it was not accessible by other users.
 
