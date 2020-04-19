@@ -3,6 +3,6 @@
 > The data is used send notifications to users who have subscribed to our website.
 > The website offers daily coronavirus updates through either email, sms messaging, or both.
 ## Contributors:
-### [Jaeha Choi](https://github.com/SpaceRabbits)
-### [Robin Seo](https://github.com/seo-chang)
-### [Duncan Spani](https://github.com/dspani)
+* [Jaeha Choi](https://github.com/SpaceRabbits)
+* [Robin Seo](https://github.com/seo-chang)
+* [Duncan Spani](https://github.com/dspani)
