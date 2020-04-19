@@ -3,7 +3,7 @@ import re
 import sys
 
 import boto3
-
+# TODO remove access keys
 ### SUBJECT TO CHANGE ###
 # sys.argv[0] file path
 # sys.argv[1] name
@@ -38,7 +38,7 @@ def main():
     if delivery == 'email' or delivery == 'both':
         email = check_email(email)
         if email != '':
-            email_result = add_email(email, arns, delivery)
+            email_result = add_email(email, arns, country)
 
     if delivery == 'text' or delivery == 'both':
         phone = check_phone(phone)
@@ -123,13 +123,13 @@ def check_email(email):
         return ''
 
 
-def add_email(email, arns, delivery):
+def add_email(email, arns, country):
     sns = boto3.client(
         'sns',
         aws_access_key_id=access_key,
         aws_secret_access_key=secret_key,
         region_name="us-east-1")
-    if delivery == 'united-states':
+    if country == 'united-states':
         sns.subscribe(
             TopicArn=arns.get('us_email'),
             Protocol='email',
