@@ -14,6 +14,8 @@ base_URL = "https://api.covid19api.com/total/country/"
 
 ## Sends message
 def send_text(arn, parsed_data):
+    # send text to all subbed & opted-in subs at arn
+    # message contains parsed data
     sns = boto3.client(
         'sns',
         aws_access_key_id=access_key,
@@ -32,6 +34,7 @@ def send_text(arn, parsed_data):
 
 ## Sends email
 def send_email(arn, parsed_data):
+    # uses arn to send email containing parsed data to all subs
     sns = boto3.client(
         'sns',
         aws_access_key_id=access_key,
@@ -57,6 +60,9 @@ def send_email(arn, parsed_data):
 
 def united_states(arns):
     ## Use API
+    # pings api for latest data
+    # formats data for text and email
+    # passes data and specific arn to text and email funcs
     today = date.today()
     yesterday = today - datetime.timedelta(days=1)
     yesterday = yesterday.strftime("%Y-%m-%d")
@@ -80,6 +86,9 @@ def united_states(arns):
 
 def south_korea(arns):
     ## Use API
+    # pings api for latest data
+    # formats data for text and email
+    # passes data and specific arn to text and email funcs
     today = date.today()
     yesterday = today - datetime.timedelta(days=1)
     yesterday = yesterday.strftime("%Y-%m-%d")
@@ -94,26 +103,11 @@ def south_korea(arns):
     send_email(arns.get('sk_email'), string)
 
 
-def main():
-    arns = get_arns()
-    # slipt arns into us and sk
-    us_arns = {}
-    sk_arns = {}
-    # split arns
-    for arn in arns:
-        sk_arns['sk_email'] = arns.get('sk_email')
-        sk_arns['sk_text'] = arns.get('sk_text')
-        us_arns['us_email'] = arns.get('us_email')
-        us_arns['us_text'] = arns.get('us_text')
-
-    print(sk_arns)
-    print(us_arns)
-
-    united_states(us_arns)
-    south_korea(sk_arns)
 
 
-def get_arns():  # FIXXXXX
+def get_arns():
+    # gets all arns from sns account
+    # formats and returns in dict
     sns = boto3.client(
         'sns',
         aws_access_key_id=access_key,
@@ -136,6 +130,24 @@ def get_arns():  # FIXXXXX
             arns['sk_email'] = arn.get("TopicArn")
 
     return arns
+
+
+def main():
+    # driver code to split arns by country
+    # starts country speific notif funcs
+    arns = get_arns()
+    # slipt arns into us and sk
+    us_arns = {}
+    sk_arns = {}
+    # split arns
+    for arn in arns:
+        sk_arns['sk_email'] = arns.get('sk_email')
+        sk_arns['sk_text'] = arns.get('sk_text')
+        us_arns['us_email'] = arns.get('us_email')
+        us_arns['us_text'] = arns.get('us_text')
+
+    united_states(us_arns)
+    south_korea(sk_arns)
 
 
 main()

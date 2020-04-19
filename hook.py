@@ -11,11 +11,8 @@ import boto3
 # sys.argv[3] country
 # sys.argv[4] email
 # sys.argv[5] phone
-#access_key = ''
-#secret_key = ''
-#access_key = "AKIAJJEGR2NACIGNQFMA"
-#secret_key = "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"
 
+# to get access_key and secret_key from server file
 ini = open("/stuff/ini", "r", encoding="utf-8")
 access_key = ini.readline().strip()
 secret_key = ini.readline().strip()
@@ -30,10 +27,12 @@ def main():
     email = sys.argv[4]
     phone = sys.argv[5]
 
+    # get all arns and stores them in dict format
     arns = get_arns()
 
     email_result = False
     phone_result = False
+
 
     if delivery == 'email' or delivery == 'both':
         email = check_email(email)
@@ -53,6 +52,8 @@ def main():
 
 def check_phone(phone_number, country):
     # check if phone number is correct format
+    # return properly formatted phone number
+    # return empty string if number cannot be formatted
     length = len(phone_number)
 
     # correctly format phone number
@@ -79,7 +80,9 @@ def check_phone(phone_number, country):
 
 
 def add_text(phone_number, arns, country, name):
-    # to check sub status
+    # check sub status then opt-out status
+    # publish welcome message and return true
+    # returns false if phone number is opted-out
     sns = boto3.client(
         'sns',
         aws_access_key_id=access_key,
@@ -123,6 +126,8 @@ def add_text(phone_number, arns, country, name):
 
 
 def check_email(email):
+    # check email format
+    # return true if proper format, false if wrong
     regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
     if (re.search(regex, email)):
         return email
@@ -131,6 +136,8 @@ def check_email(email):
 
 
 def add_email(email, arns, country):
+    # add email to server
+    # will always return true
     sns = boto3.client(
         'sns',
         aws_access_key_id=access_key,
@@ -153,6 +160,8 @@ def add_email(email, arns, country):
 
 
 def get_arns():
+    # get all topic arns and put into dict
+    # return dict
     sns = boto3.client(
         'sns',
         aws_access_key_id=access_key,
