@@ -55,6 +55,12 @@
         </p>
 
     </div>
+    <div class="footer">
+        <p class="credit">made by (link to repo!)</p>
+        <a class="s" href="https://github.com/seo-chang">Seo Chang</a>
+        <a class="j" href="https://git.jaeha.dev/explorer">Jaeha Choi</a>
+        <a class="d" href="https://github.com/dspani">Duncan Spani</a>
+    </div>
 </body>
 
 </html>

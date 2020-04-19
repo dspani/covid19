@@ -3,7 +3,7 @@ import re
 import sys
 
 import boto3
-# TODO remove access keys
+
 ### SUBJECT TO CHANGE ###
 # sys.argv[0] file path
 # sys.argv[1] name

@@ -1,5 +1,6 @@
 body {
     background: #1f2227;
+    font-size: 18px;
 }
 
 div {
@@ -22,6 +23,10 @@ input {
     font-size: 25px;
 }
 
+option {
+  font-family: 'Baloo Bhaina 2', cursive;
+}
+
 p, label {
     color: #FFF;
     font-family: 'Baloo Bhaina 2', cursive;
@@ -33,9 +38,14 @@ label {
     padding-top: 10px;
 }
 
+.example {
+  padding: 0;
+  margin: 0;
+}
+
 .title {
     background-color: #262626;
-    color: #cca300;
+    color: #e6b800;
 }
 
 .result {
@@ -46,23 +56,89 @@ label {
     color: #cca300;
 }
 
-.button {
-    display: inline-flex;
-    align-items: center;
-    background: #737373;
-    box-shadow: 0 3px 2px 0 rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    height: 45px;
-    padding: 0 30px;
-    color: #1f2227;
-    font-family: 'Baloo Bhaina 2', cursive;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: background .3s, transform .3s, box-shadow .3s;
-    will-change: transform;
+.footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   color: white;
+   background-color: #2d3239;
 }
 
+.credit {
+  display: inline;
+  margin-right: 20px;
+  padding-bottom: 10px;
+  text-align: left;
+  padding-left: 10px;
+  max-width: 50%;
+    padding-left: 20px;
+}
+
+/* code from https://codepen.io/mroverdoz/pen/BGyXOJ */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  background: #cca300;
+  box-shadow: 0 3px 2px 0 rgba(0,0,0,0.1);
+  border-radius: 5px;
+  height: 45px;
+  padding: 0 30px;
+  color: #fff;
+  font-family: 'Baloo Bhaina 2', cursive;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background .3s, transform .3s, box-shadow .3s;
+  will-change: transform;
+  
+}
+
+.button:hover {
+    background: darken(#cca300,10%);
+    box-shadow: 0 4px 17px rgba(0,0,0,0.2);
+    transform: translate3d(0, -2px, 0);
+  }
+.button:active {
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);
+    transform: translate3d(0, 1px, 0);
+  }  
+
+/* code from https://codepen.io/geoffgraham/pen/bxEVEN */
+
+.j, .d, .s{
+  background: linear-gradient(to bottom, var(--mainColor) 0%, var(--mainColor) 100%);
+	background-position: 0 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+	background-repeat: repeat-x;
+	background-size: 3px 3px;
+  text-decoration: none;
+  color: #FFF;
+}
+
+.s{
+  font-family: 'Rock Salt', cursive;
+    text-decoration: none;
+}
+.d{
+  font-family: 'Merriweather', serif;
+    text-decoration: none;
+}
+
+.j:hover, .d:hover, .s:hover {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 4'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift .3s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%23ff9800' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
+  background-position: 0 100%;
+  background-size: auto 6px;
+  background-repeat: repeat-x;
+  text-decoration: none;
+}
+
+
+
+/* code from https://codepen.io/raubaca/pen/VejpQP */
 select {
+    font-family: 'Baloo Bhaina 2', cursive;
     font-size: 18px;
     min-width: 202px;
     -webkit-appearance: none;

@@ -3,47 +3,57 @@
 <html lang="en">
 
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaina+2:wght@600&display=swap" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaina+2:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital@1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="image.ico" type="image/x-icon" />
 </head>
 
 <body>
-<div>
-    <title>🔔 Covid-19 Updates</title>
-    <h1 class="title"> Sign up for daily updates on COVID-19</h1>
-</div>
+    <div>
+        <title>🔔 Covid-19 Updates</title>
+        <h1 class="title"> Sign up for daily updates on COVID-19</h1>
+    </div>
 
-<div>
-    <form action="submit.php" method="post">
-        <p>Name: </p>
-        <input type="text" name="name">
-        <p></p>
-        <label>
-            Country:
-        </label>
-        <select name="country">
-            <option value="united-states">United States</option>
-            <option value="korea-south">South Korea</option>
-        </select>
-        <p>Email: </p>
-        <input type="text" name="email">
-        <p>Phone number: <br/>US and South Korea area codes only </p>
-        <input type="text" name="phone">
-        <p></p>
-        <input type="radio" id="email" name="type" value="email">
-        <label for="email">Email only</label>
-        <input type="radio" id="phone" name="type" value="phone">
-        <label for="phone">Text only</label>
-        <input type="radio" id="both" name="type" value="both" checked>
-        <label for="both">Both</label>
-        <p>
+    <div>
+        <form action="submit.php" method="post">
+            <p>Name: </p>
+            <input type="text" name="name">
+            <p></p>
+            <label>
+                Country:
+            </label>
+            <select name="country">
+                <option value="united-states">United States</option>
+                <option value="korea-south">South Korea</option>
+            </select>
+            <p>Email: </p>
+            <input type="text" name="email">
+            <p class="example">Example: example@example.com</p>
+            <p>Phone number: </p>
+            <input type="text" name="phone">
+            <p class="example">Example: 2061111111</p>
+            <p class="example">예시) 01012345678 또는 821012345678</p>
+            <input type="radio" id="email" name="type" value="email">
+            <label for="email">Email only</label>
+            <input type="radio" id="phone" name="type" value="phone">
+            <label for="phone">Text only</label>
+            <input type="radio" id="both" name="type" value="both" checked>
+            <label for="both">Both</label>
+            <p>
+            </p>
+            <input class="button" type="submit" value="Subscribe">
+            <p>If you opt-out of texting services, you may not resubscribe for 30 days.</p>
 
-        </p>
-        <input class="button" type="submit" value="Submit">
-    </form>
-</div>
-
+        </form>
+    </div>
+    <div class="footer">
+        <p class="credit">made by (link to repo!)</p>
+        <a class="s" href="https://github.com/seo-chang">Seo Chang</a>
+        <a class="j" href="https://git.jaeha.dev/explorer">Jaeha Choi</a>
+        <a class="d" href="https://github.com/dspani">Duncan Spani</a>
+    </div>
 
 </body>
 
