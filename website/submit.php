@@ -13,24 +13,44 @@
         <h1> Sign up for daily updates on COVID-19</h1>
     </div>
     <div>
-        <p>Name: </p>
         <?PHP
-        echo "<p class='output'>$_POST[name]</p>";
+        $user_name = $_POST['name'];
+        $user_email = $_POST['email'];
+        $user_phone = $_POST['phone'];
+        if (empty($user_name)) {
+            $user_name = 'user';
+        }
+        if (empty($user_email)) {
+            $user_email = 'na';
+        }
+        if (empty($user_phone)) {
+            $user_phone = 'na';
+        }
+        echo "<p>Name: </p>";
+        echo "<p class='output'>$user_name</p>";
+        echo "<p>Delivery option: </p>";
+        echo "<p class='output'>$_POST[type]</p>";
+        echo "<p>Email: </p>";
+        echo "<p class='output'>$user_email</p>";
+        echo "<p>Phone: </p>";
+        echo "<p class='output'>$user_phone</p>";
+        echo "<p>Country: </p>";
+        echo "<p class='output'>$_POST[country]</p>";
         ?>
-        <p>Email: </p>
-        <?PHP
-        echo "<p class='output'>$_POST[email]</p>";
-        ?>
-        <p>Phone: </p>
-        <?PHP
-        echo "<p class='output'>$_POST[phone]</p>";
-        ?>
+
+
         <p class="result">
             Result:
             <br />
             <?PHP
-
-            echo shell_exec("python3 /stuff/hook.py '$_POST[name]' '$_POST[email]' '$_POST[phone]' ");
+            //# sys.argv[0] file path
+            //# sys.argv[1] name
+            //# sys.argv[2] delivery option
+            //# sys.argv[3] country
+            //# sys.argv[4] email
+            //# sys.argv[5] phone
+            //echo "//shell_exec disabled for testing//";
+            echo shell_exec("python3 /stuff/hook.py '$user_name' '$_POST[type] '$_POST[country]' '$user_email' '$user_phone' ");
             ?>
         </p>
     </div>
