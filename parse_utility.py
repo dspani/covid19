@@ -28,6 +28,7 @@ index       data
 11          Date
 '''
 
+
 def read_and_parse(jdata):
     data_dict = {}
     for jobject in jdata:
@@ -48,7 +49,7 @@ def read_and_parse(jdata):
         parsed_object.append(jobject["Active"])
         parsed_object.append(curr_date)
 
-        name = curr_cont_code+"-"+curr_prov
+        name = curr_cont_code + "-" + curr_prov
         data_dict.setdefault(name, {})
         data_dict[name][curr_date] = parsed_object
     return data_dict
@@ -56,14 +57,15 @@ def read_and_parse(jdata):
 
 def output_to_string(parsed_data):
     string = ""
-    string += "Country: "+str(parsed_data[0])
+    string += "Country: " + str(parsed_data[0])
     if parsed_data[2] != "":
         string += "\nState: " + str(parsed_data[2])
-    string += "\nConfirmed cases: "+str(parsed_data[7])
-    string += "\nTotal deaths: "+str(parsed_data[8])
-    string += "\nTotal recovered: "+str(parsed_data[9])
-    string += "\n\nData date: +"+str(parsed_data[11])[:10]
+    string += "\nConfirmed cases: " + str(parsed_data[7])
+    string += "\nTotal deaths: " + str(parsed_data[8])
+    string += "\nTotal recovered: " + str(parsed_data[9])
+    string += "\n\nData date: +" + str(parsed_data[11])[:10]
     return string
+
 
 ## Output: string containing html formatted texts
 ## Input: list of parsed data
