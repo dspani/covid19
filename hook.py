@@ -3,7 +3,7 @@ import re
 import sys
 
 import boto3
-# TODO remove access keys
+
 ### SUBJECT TO CHANGE ###
 # sys.argv[0] file path
 # sys.argv[1] name
@@ -13,7 +13,7 @@ import boto3
 # sys.argv[5] phone
 
 # to get access_key and secret_key from server file
-ini = open("/stuff/ini", "r", encoding="utf-8")
+ini = open("/deploy/ini", "r", encoding="utf-8")
 access_key = ini.readline().strip()
 secret_key = ini.readline().strip()
 ini.close()
