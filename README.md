@@ -64,6 +64,6 @@ The website offers daily coronavirus updates at 12:00 PM through either email, s
 - Add more languages in the website.
 
 ## Contributors:
-- [Jaeha Choi](https://git.jaeha.dev/Jaeha.Choi) [Github](https://github.com/jaeha-choi)
+- [Jaeha Choi](https://git.jaeha.dev/Jaeha.Choi) —— [Github](https://github.com/jaeha-choi)
 - [Robin Seo](https://github.com/seo-chang)
 - [Duncan Spani](https://github.com/dspani)
