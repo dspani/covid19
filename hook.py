@@ -51,7 +51,7 @@ def main():
         print("You are not subscribed to COVID-19 update")
 
 
-def check_phone(phone_number):
+def check_phone(phone_number, country):
     # check if phone number is correct format
     length = len(phone_number)
 
@@ -59,11 +59,18 @@ def check_phone(phone_number):
     if length == 12:
         if phone_number[0] == '+' and phone_number[1] == '1':
             return phone_number
+        # korean number without +
+        if country == 'korea-south' and phone_number[0:2] == '82':
+            new_phone = '+' + phone_number
+            return new_phone
     # phone number without +1
     elif length == 10:
         new_phone = '+1' + phone_number
         return new_phone
     # number with 1 but no +
+    elif length == 11 and country == 'korea-south' and phone_number[0:3] == '010':
+        new_phone = '+82' + phone_number[1:]
+        return new_phone
     elif length == 11 and phone_number[0] == '1':
         new_phone = '+' + phone_number
         return new_phone
