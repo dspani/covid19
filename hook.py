@@ -11,20 +11,18 @@ import boto3
 # sys.argv[3] country
 # sys.argv[4] email
 # sys.argv[5] phone
-access_key = ''
-secret_key = ''
+#access_key = ''
+#secret_key = ''
+#access_key = "AKIAJJEGR2NACIGNQFMA"
+#secret_key = "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"
+
+ini = open("/stuff/ini", "r", encoding="utf-8")
+access_key = ini.readline().strip()
+secret_key = ini.readline().strip()
+ini.close()
 
 
 def main():
-    ini = open("/stuff/ini", "r", encoding="utf-8")
-    # TODO:remove ln25 & ln26 after testing
-    access_key = ini.readline().strip()
-    secret_key = ini.readline().strip()
-    ini.close()
-
-    print(access_key)
-    print(secret_key)
-
     # delivery will either be 'text', 'email', or 'both'
     name = sys.argv[1]
     delivery = sys.argv[2]
