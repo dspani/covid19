@@ -5,3 +5,4 @@
 ## Contributors:
 ### [Jaeha Choi](https://github.com/SpaceRabbits)
 ### [Robin Seo](https://github.com/seo-chang)
+### [Duncan Spani](https://github.com/dspani)
