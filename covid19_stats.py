@@ -1,10 +1,8 @@
 import datetime
 import sys
 from datetime import date
-
 import boto3
 import requests
-
 import parse_utility
 
 access_key = sys.argv[1]
