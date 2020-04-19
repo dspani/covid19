@@ -1,10 +1,10 @@
-# Covid 19 SMS/Email Notification —— [UWB Hacks the Cloud 2020](https://uwbhacks.com/)
+# Covid 19 Notification —— [UWB Hacks the Cloud 2020](https://uwbhacks.com/)
 
 
 ![webpage](./image/webpage.png)
 
 
-> ## A fully automated notification server for COVID-19 data
+> ## A fully automated SMS/Email notification server for COVID-19 data
 
 ## Goals: 
 The goals of this project were for us to gain knowledge in the cloud while providing a relevant and useful service.\
