@@ -1,11 +1,11 @@
-
-import requests
+import datetime
 import sys
 from datetime import date
-import boto3
-import parse_utility
-import datetime
 
+import boto3
+import requests
+
+import parse_utility
 
 access_key = ''
 secret_key = ''
@@ -58,6 +58,7 @@ def send_email(arn, parsed_data):
         Subject=subject
     )
 
+
 def united_states(arns):
     ## Use API
     # request = requests.get(URL)
@@ -101,7 +102,6 @@ def south_korea(arns):
     parsed_data = parse_utility.read_and_parse(jdata)
     string = parsed_data.get("-").get(yesterday + "T00:00:00Z")  ## Use JSON file
 
-
     send_text(arns.get('text'), string)
     send_email(arns.get('email'), string)
 
@@ -118,14 +118,14 @@ def main():
         us_arns['us_email'] = arns.get('us_email')
         us_arns['us_text'] = arns.get('us_text')
 
-
     print(sk_arns)
     print(us_arns)
 
     united_states(us_arns)
     south_korea(sk_arns)
 
-def get_arns(): # FIXXXXX
+
+def get_arns():  # FIXXXXX
     sns = boto3.client(
         'sns',
         aws_access_key_id=access_key,
@@ -155,11 +155,9 @@ try:
     secret_key = sys.argv[2]
 
     # TODO:remove ln159 & ln160 after testing
-    print(access_key)
-    print(secret_key)
+    # print(access_key)
+    # print(secret_key)
     if sys.argv[1] and sys.argv[2]:
         main()
 except Exception as e:
     print("No Access Keys")
-
-

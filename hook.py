@@ -17,9 +17,13 @@ secret_key = ''
 
 def main():
     ini = open("/stuff/ini", "r", encoding="utf-8")
+    # TODO:remove ln25 & ln26 after testing
     access_key = ini.readline().strip()
     secret_key = ini.readline().strip()
     ini.close()
+
+    print(access_key)
+    print(secret_key)
 
     # delivery will either be 'text', 'email', or 'both'
     name = sys.argv[1]

@@ -2,8 +2,8 @@ body {
     background: #1f2227;
 }
 
-div{
-  text-align: center;
+div {
+    text-align: center;
 }
 
 h1 {
@@ -31,6 +31,19 @@ p, label {
 
 label {
     padding-top: 10px;
+}
+
+.title {
+    background-color: #262626;
+    color: #cca300;
+}
+
+.result {
+    color: #cc7a00;
+}
+
+.output {
+    color: #cca300;
 }
 
 .button {

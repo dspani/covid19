@@ -10,7 +10,7 @@
 <body>
     <div>
         <title>🔔 Covid-19 Updates</title>
-        <h1> Sign up for daily updates on COVID-19</h1>
+        <h1 class="title"> Sign up for daily updates on COVID-19</h1>
     </div>
     <div>
         <?PHP
@@ -38,10 +38,10 @@
         echo "<p class='output'>$_POST[country]</p>";
         ?>
 
-
-        <p class="result">
+        <p>
             Result:
-            <br />
+        </p>
+        <p class="result">
             <?PHP
             //# sys.argv[0] file path
             //# sys.argv[1] name
@@ -53,6 +53,7 @@
             echo shell_exec("python3 /stuff/hook.py '$user_name' '$_POST[type]' '$_POST[country]' '$user_email' '$user_phone' ");
             ?>
         </p>
+
     </div>
 </body>
 
