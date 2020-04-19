@@ -26,17 +26,23 @@ def main():
 
     arns = get_arns()
 
+    email_result = False
+    phone_result = False
+
     if delivery == 'email' or delivery == 'both':
         email = check_email(email)
         if email != '':
-            add_email(email, arns, delivery)
+            email_result = add_email(email, arns, delivery)
 
     if delivery == 'text' or delivery == 'both':
         phone = check_phone(phone)
         if phone != '':
-            add_text(phone, arns, country, name)
+            phone_result = add_text(phone, arns, country, name)
 
-    print("Successfully subscribed to COVID-19 update")
+    if(email_result or phone_result):
+        print("Successfully subscribed to COVID-19 update")
+    else:
+        print("You are not subscribed to COVID-19 update")
     # out.write("code execution: successful")
     # out.close()
 
@@ -86,23 +92,24 @@ def add_text(phone_number, arns, country, name):
                 Protocol='sms',
                 Endpoint=phone_number
             )
+        sns.publish(
+            PhoneNumber=phone_number,
+            Message=name + ', Welcome to COVID-19 daily alerts!\nTo opt-out of daily updates reply STOP',
+            #TopicArn=text_ARN,
+            #Endpoint=phone_number,
+            #Protocol='sms'
+        )
+        return True
 
     else:
         try:
             sns.opt_in_phone_number(
                 phoneNumber=phone_number
             )
+            return True
         except Exception as e:
             print('You have opted-out within 30 days\nPlease wait 30 days to opt back in.')
-
-    sns.publish(
-        PhoneNumber=phone_number,
-        Message=name + ', Welcome to COVID-19 daily alerts!\nTo opt-out of daily updates reply STOP',
-        #TopicArn=text_ARN,
-        #Endpoint=phone_number,
-        #Protocol='sms'
-    )
-
+            return False
 
 def check_email(email):
     regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
@@ -124,12 +131,14 @@ def add_email(email, arns, delivery):
             Protocol='email',
             Endpoint=email
         )
+        return True
     else:
         sns.subscribe(
             TopicArn=arns.get('sk_email'),
             Protocol='email',
             Endpoint=email
         )
+        return True
 
 
 def get_arns():
