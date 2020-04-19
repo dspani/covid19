@@ -12,7 +12,6 @@ base_URL = "https://api.covid19api.com/total/country/"
 
 ## Sends message
 def send_text(arn, parsed_data):
-    print('text function: ' + arn)
     sns = boto3.client(
         'sns',
         aws_access_key_id=access_key,
@@ -31,7 +30,6 @@ def send_text(arn, parsed_data):
 
 ## Sends email
 def send_email(arn, parsed_data):
-    print('email function ' + arn)
     sns = boto3.client(
         'sns',
         aws_access_key_id=access_key,
@@ -78,8 +76,6 @@ def united_states(arns):
         parsed_data = parse_utility.read_and_parse(jdata)
         string = parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z")
     '''
-    print("email arn: " + arns.get('email'))
-    print("text arn: " + arns.get('text'))
     send_text(arns.get('text'), string)
     send_email(arns.get('email'), string)
 
@@ -99,7 +95,6 @@ def south_korea(arns):
     parsed_data = parse_utility.read_and_parse(jdata)
     string = parsed_data.get("-").get(yesterday + "T00:00:00Z")  ## Use JSON file
 
-
     send_text(arns.get('text'), string)
     send_email(arns.get('email'), string)
 
@@ -116,14 +111,11 @@ def main():
         us_arns['us_email'] = arns.get('us_email')
         us_arns['us_text'] = arns.get('us_text')
 
+    united_states(us_arns)
+    south_korea(sk_arns)
 
-    print(sk_arns)
-    print(us_arns)
 
-    #united_states(us_arns)
-    #south_korea(sk_arns)
-
-def get_arns(): # FIXXXXX
+def get_arns():
     sns = boto3.client(
         'sns',
         aws_access_key_id=access_key,
