@@ -40,7 +40,7 @@ def main():
             email_result = add_email(email, arns, country)
 
     if delivery == 'text' or delivery == 'both':
-        phone = check_phone(phone)
+        phone = check_phone(phone, country)
         if phone != '':
             phone_result = add_text(phone, arns, country, name)
 
