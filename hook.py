@@ -1,7 +1,8 @@
-#print("php has executed hook.py  ..........")
-import sys
-import boto3
+# print("php has executed hook.py  ..........")
 import re
+import sys
+
+import boto3
 
 ### SUBJECT TO CHANGE ###
 # sys.argv[0] file path
@@ -10,13 +11,16 @@ import re
 # sys.argv[3] country
 # sys.argv[4] email
 # sys.argv[5] phone
-access_key = 'AKIAJJEGR2NACIGNQFMA'
-secret_key = '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'
+access_key = ''
+secret_key = ''
+
 
 def main():
-    # out = open("/stuff/out","w",encoding="utf-8")
-    # out.write(str(sys.argv[2])+"\n")
-    # out.write(str(sys.argv[3])+"\n")
+    ini = open("/stuff/ini", "r", encoding="utf-8")
+    access_key = ini.readline().strip()
+    secret_key = ini.readline().strip()
+    ini.close()
+
     # delivery will either be 'text', 'email', or 'both'
     name = sys.argv[1]
     delivery = sys.argv[2]
@@ -39,12 +43,10 @@ def main():
         if phone != '':
             phone_result = add_text(phone, arns, country, name)
 
-    if(email_result or phone_result):
+    if (email_result or phone_result):
         print("Successfully subscribed to COVID-19 update")
     else:
         print("You are not subscribed to COVID-19 update")
-    # out.write("code execution: successful")
-    # out.close()
 
 
 def check_phone(phone_number):
@@ -68,7 +70,6 @@ def check_phone(phone_number):
 
 
 def add_text(phone_number, arns, country, name):
-
     # to check sub status
     sns = boto3.client(
         'sns',
@@ -85,7 +86,7 @@ def add_text(phone_number, arns, country, name):
                 TopicArn=arns.get('us_text'),
                 Protocol='sms',
                 Endpoint=phone_number
-                )
+            )
         else:
             sns.subscribe(
                 TopicArn=arns.get('sk_text'),
@@ -95,9 +96,9 @@ def add_text(phone_number, arns, country, name):
         sns.publish(
             PhoneNumber=phone_number,
             Message=name + ', Welcome to COVID-19 daily alerts!\nTo opt-out of daily updates reply STOP',
-            #TopicArn=text_ARN,
-            #Endpoint=phone_number,
-            #Protocol='sms'
+            # TopicArn=text_ARN,
+            # Endpoint=phone_number,
+            # Protocol='sms'
         )
         return True
 
@@ -110,6 +111,7 @@ def add_text(phone_number, arns, country, name):
         except Exception as e:
             print('You have opted-out within 30 days\nPlease wait 30 days to opt back in.')
             return False
+
 
 def check_email(email):
     regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
@@ -147,7 +149,7 @@ def get_arns():
         aws_access_key_id=access_key,
         aws_secret_access_key=secret_key,
         region_name="us-east-1"
-        )
+    )
 
     response = sns.list_topics()
     topics = response.get('Topics')
@@ -165,5 +167,6 @@ def get_arns():
             arns['sk_email'] = arn.get("TopicArn")
 
     return arns
+
 
 main()

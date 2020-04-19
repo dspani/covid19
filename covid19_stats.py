@@ -1,12 +1,14 @@
-import json
+
 import requests
+import sys
 from datetime import date
 import boto3
 import parse_utility
 import datetime
 
-access_key = 'AKIAJJEGR2NACIGNQFMA'
-secret_key = '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'
+
+access_key = ''
+secret_key = ''
 base_URL = "https://api.covid19api.com/total/country/"
 
 
@@ -120,8 +122,8 @@ def main():
     print(sk_arns)
     print(us_arns)
 
-    #united_states(us_arns)
-    #south_korea(sk_arns)
+    united_states(us_arns)
+    south_korea(sk_arns)
 
 def get_arns(): # FIXXXXX
     sns = boto3.client(
@@ -148,6 +150,16 @@ def get_arns(): # FIXXXXX
     return arns
 
 
-main()
+try:
+    access_key = sys.argv[1]
+    secret_key = sys.argv[2]
+
+    # TODO:remove ln159 & ln160 after testing
+    print(access_key)
+    print(secret_key)
+    if sys.argv[1] and sys.argv[2]:
+        main()
+except Exception as e:
+    print("No Access Keys")
 
 
