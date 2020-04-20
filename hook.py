@@ -18,6 +18,7 @@ access_key = ini.readline().strip()
 secret_key = ini.readline().strip()
 ini.close()
 
+
 def main():
     # delivery will either be 'text', 'email', or 'both'
     name = sys.argv[1]
@@ -32,20 +33,20 @@ def main():
     email_result = False
     phone_result = False
 
-    if delivery == 'email' or delivery == 'both':
-        email = check_email(email)
-        if email != '':
+    if email != "na":
+        if delivery == 'email' or delivery == 'both':
+            email = check_email(email)
             email_result = add_email(email, arns, country)
 
-    if delivery == 'text' or delivery == 'both':
-        phone = check_phone(phone, country)
-        if phone != '':
+    if phone != "na":
+        if delivery == 'phone' or delivery == 'both':
+            phone = check_phone(phone, country)
             phone_result = add_text(phone, arns, country, name)
 
     if (email_result or phone_result):
         print("Successfully subscribed to COVID-19 update")
     else:
-        print("You are not subscribed to COVID-19 update")
+        print("You are NOT subscribed to COVID-19 update. Please check your input.")
 
 
 def check_phone(phone_number, country):
