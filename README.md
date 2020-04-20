@@ -10,7 +10,7 @@
 ## To update after initial setup, execute
 
 /home/cool/
-> ### sudo mv ./covid19/deploy.sh . && chmod +x ./deploy.sh
+> ### sudo mv ./covid19/deploy.sh . && sudo chmod +x ./deploy.sh
 > ### sudo ./deploy.sh
 
 
