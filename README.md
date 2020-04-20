@@ -6,6 +6,13 @@
 
 > ## A fully automated SMS/Email notification server for COVID-19 data
 
+
+## To update after initial setup, execute
+
+> ### cd ./covid19
+> ### chmod +x ./deploy.sh && sudo ./deploy.sh
+
+
 ## Goals: 
 The goals of this project were for us to gain knowledge in the cloud while providing a relevant and useful service.\
 We wanted to provide current information on the growing epidemic and every once a day, notifications give simple, official information through email or/and text messages so people can acknowledge the danger that is the coronavirus.

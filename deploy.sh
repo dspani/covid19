@@ -15,7 +15,7 @@ echo "Deleting outdated scripts--------"
 sudo rm -rf /deploy/*
 echo "Deleting covid19 and its content--------"
 rm -rf ~/covid19
-echo "Deleting covid19 and its content--------"
+echo "Cloning git--------"
 git clone https://github.com/dspani/covid19
 echo "Moving new websites--------"
 sudo cp ~/covid19/website/* /var/www/covnews.org/html/
@@ -27,5 +27,5 @@ echo "Changing permission--------"
 sudo chmod +x /deploy/push_notifications.sh
 
 echo "-------- Done --------"
-echo "You should still add [access_key] and [secret_key]"
+echo "You should still add [access_key] and [secret_key] in"
 echo "/deploy/ini and /deploy/push_notification.sh"
