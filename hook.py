@@ -18,7 +18,6 @@ access_key = ini.readline().strip()
 secret_key = ini.readline().strip()
 ini.close()
 
-
 def main():
     # delivery will either be 'text', 'email', or 'both'
     name = sys.argv[1]
@@ -32,7 +31,6 @@ def main():
 
     email_result = False
     phone_result = False
-
 
     if delivery == 'email' or delivery == 'both':
         email = check_email(email)
@@ -107,7 +105,7 @@ def add_text(phone_number, arns, country, name):
             )
         sns.publish(
             PhoneNumber=phone_number,
-            Message=name + ', Welcome to COVID-19 daily alerts!\nTo opt-out of daily updates reply STOP',
+            Message= name + ', Welcome to COVID-19 daily alerts!\nTo opt-out of daily updates reply STOP',
             # TopicArn=text_ARN,
             # Endpoint=phone_number,
             # Protocol='sms'
