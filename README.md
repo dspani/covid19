@@ -61,12 +61,12 @@ The website offers daily coronavirus updates at 12:00 PM through either email, s
 - Creating the Crontab Script: the crontab script took some time to create, we had no idea how to use crontab so we had to take some time to learn how to set it up and the syntax behnd it.
 
 ### Sample Message:
-- Country: United States of America
-- Confirmed cases: 731602
-- Total deaths: 38647
-- Total recovered: 64840
-- 
-- ta date: +2020-04-18
+`Country: United States of America
+Confirmed cases: 731602
+Total deaths: 38647
+Total recovered: 64840
+ 
+Data date: +2020-04-18`
 
 ## Future Work:
 - Add support for mopre countries.
