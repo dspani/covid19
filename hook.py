@@ -174,13 +174,13 @@ def get_arns():
     # since us has arn for text and email
     arns = {}
     for arn in list(topics):
-        if 'united_states_text' in arn.get("TopicArn"):
+        if 'united-states_text' in arn.get("TopicArn"):
             arns['us_text'] = arn.get("TopicArn")
-        elif 'united_states' in arn.get("TopicArn"):
+        elif 'united-states_email' in arn.get("TopicArn"):
             arns['us_email'] = arn.get("TopicArn")
-        elif 'south_korea_text' in arn.get("TopicArn"):
+        elif 'korea-south_text' in arn.get("TopicArn"):
             arns['sk_text'] = arn.get("TopicArn")
-        elif 'south_korea' in arn.get("TopicArn"):
+        elif 'korea-south_email' in arn.get("TopicArn"):
             arns['sk_email'] = arn.get("TopicArn")
 
     return arns

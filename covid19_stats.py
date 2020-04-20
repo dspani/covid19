@@ -78,7 +78,7 @@ def united_states(arns):
         string = parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z")
     '''
 
-    #send_text(arns.get('us_text'), string)
+    send_text(arns.get('us_text'), string)
     send_email(arns.get('us_email'), string)
 
 
@@ -116,18 +116,18 @@ def get_arns():
     response = sns.list_topics()
     topics = response.get('Topics')
     # since us has arn for text and email
-    print(topics)
     arns = {}
     for arn in list(topics):
-        if 'united_states_text' in arn.get("TopicArn"):
+        if 'united-states_text' in arn.get("TopicArn"):
             arns['us_text'] = arn.get("TopicArn")
-        elif 'united_states_email' in arn.get("TopicArn"):
+        elif 'united-states_email' in arn.get("TopicArn"):
             arns['us_email'] = arn.get("TopicArn")
-        elif 'south_korea_text' in arn.get("TopicArn"):
+        elif 'korea-south_text' in arn.get("TopicArn"):
             arns['sk_text'] = arn.get("TopicArn")
-        elif 'south_korea_email' in arn.get("TopicArn"):
+        elif 'korea-south_email' in arn.get("TopicArn"):
             arns['sk_email'] = arn.get("TopicArn")
 
+    print(arns)
     return arns
 
 
@@ -146,7 +146,7 @@ def main():
         us_arns['us_text'] = arns.get('us_text')
 
     united_states(us_arns)
-    #south_korea(sk_arns)
+    south_korea(sk_arns)
 
 
 main()
