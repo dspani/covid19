@@ -7,10 +7,10 @@
 > ## A fully automated SMS/Email notification server for COVID-19 data
 
 
-## To update after initial setup,
-Execute
-> cd ./covid19
-> chmod +x ./deploy && sudo ./deploy.sh
+## To update after initial setup, execute
+
+> ### cd ./covid19
+> ### chmod +x ./deploy && sudo ./deploy.sh
 
 
 ## Goals: 
