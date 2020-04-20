@@ -9,7 +9,8 @@
 
 ## To update after initial setup,
 Execute
-> cd ./covid19 && sudo ./deploy.sh
+> cd ./covid19
+> chmod +x ./deploy && sudo ./deploy.sh
 
 
 ## Goals: 
