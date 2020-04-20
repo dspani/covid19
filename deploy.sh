@@ -25,6 +25,8 @@ cp ~/covid19/secret/ini /deploy/
 cp ~/covid19/secret/push_notifications.sh /deploy/
 echo "Changing permission--------"
 sudo chmod +x /deploy/push_notifications.sh
+echo "Restarting server--------"
+sudo systemctl restart nginx
 
 echo "-------- Done --------"
 echo "You should still add [access_key] and [secret_key] in"
