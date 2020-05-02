@@ -30,4 +30,4 @@ sudo systemctl restart nginx
 
 echo "-------- Done --------"
 echo "You should still add [access_key] and [secret_key] in"
-echo "/deploy/ini and /deploy/push_notification.sh"
+echo "/deploy/ini and /deploy/push_notifications.sh"
