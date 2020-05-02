@@ -5,8 +5,10 @@ import boto3
 import requests
 import parse_utility
 
-#access_key = sys.argv[1]
-#secret_key = sys.argv[2]
+access_key = sys.argv[1]
+#print(access_key)
+secret_key = sys.argv[2]
+#print(secret_key)
 base_URL = "https://api.covid19api.com/total/country/"
 
 
@@ -31,7 +33,8 @@ def send_text(arn,parsed_data, string1):
 
 
 ## Sends email
-def send_email(arn, parsed_data):
+def send_email(arn, parsed_data, string1):
+    print(arn)
     # uses arn to send email containing parsed data to all subs
     sns = boto3.client(
         'sns',
@@ -47,7 +50,7 @@ def send_email(arn, parsed_data):
     subject = 'Coronavirus stats for ' + today
 
     ## Email take plain text
-    html_message = parse_utility.output_to_string(parsed_data)
+    html_message = parse_utility.output_to_string(parsed_data, string1)
     ## Push to subscribers
     sns.publish(
         TopicArn=arn,
@@ -80,8 +83,8 @@ def united_states(arns):
         string = parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z")
     '''
 
-    send_text( arns.get('us_text'), string, string1)
-    send_email(arns.get('us_email'), string)
+    #send_text( arns.get('us_text'), string, string1)
+    send_email(arns.get('us_email'), string, string1)
 
 
 def south_korea(arns):
@@ -101,8 +104,8 @@ def south_korea(arns):
     string = parsed_data.get("-").get(yesterday + "T00:00:00Z")  ## Use JSON file
     string1 = parsed_data.get("-").get(yesterday2 + "T00:00:00Z")  ## Use JSON file
 
-    send_text(arns.get('sk_text'), string, string1)
-    send_email(arns.get('sk_email'), string)
+    #send_text(arns.get('sk_text'), string, string1)
+    send_email(arns.get('sk_email'), string, string1)
 
 
 
@@ -112,8 +115,8 @@ def get_arns():
     # formats and returns in dict
     sns = boto3.client(
         'sns',
-        #aws_access_key_id=access_key,
-        #aws_secret_access_key=secret_key,
+        aws_access_key_id=access_key,
+        aws_secret_access_key=secret_key,
         region_name="us-east-1"
     )
 

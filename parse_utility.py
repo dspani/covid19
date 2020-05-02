@@ -61,10 +61,10 @@ def output_to_string(parsed_data, string1):
     string += "Country: " + str(parsed_data[0])
     if parsed_data[2] != "":
         string += "\nState: " + str(parsed_data[2])
-    string += "\nConfirmed cases: " + str(parsed_data[7])
-    string += "\nDaily confirmed cases " +str(parsed_data[7] - string1[7])
+    string += "\nTotal confirmed cases: " + str(parsed_data[7])
+    string += "\nToday's confirmed cases: " +str(parsed_data[7] - string1[7])
     string += "\nTotal deaths: " + str(parsed_data[8])
-    string += "\nDaily deaths: " + str(parsed_data[8] - string1[8])
+    string += "\nToday's deaths: " + str(parsed_data[8] - string1[8])
     string += "\nTotal recovered: " + str(parsed_data[9])
     string += "\n\nData date: +" + str(parsed_data[11])[:10]
     return string
@@ -73,7 +73,7 @@ def output_to_string(parsed_data, string1):
 ## Output: string containing html formatted texts
 ## Input: list of parsed data
 def output_to_html(parsed_data):
-    string = "<p><strong>COVID-19: Daily case report</strong></p>"
+    string = "<p><strong>COVID-19: Today's case report</strong></p>"
     string += "\n<p>Country:</p>" + str(parsed_data[0])
     if str(parsed_data[2]) != "":
         string += "\n<p>Province:</p>" + str(parsed_data[2])
