@@ -15,7 +15,7 @@
 
 
 ## Goals: 
-The goals of this project were for us to gain knowledge in the cloud computing while providing a relevant and useful service.\
+The goals of this project were for us to gain knowledge in cloud computing while providing a relevant and useful service.\
 We wanted to provide current information on the growing epidemic and every once a day, notifications give simple, official information through email or/and text messages so people can acknowledge the danger that is the coronavirus.
 
 
@@ -26,8 +26,10 @@ From that point on the user would not have to worry about anything unless they w
 The user will then begin recieving daily updates for their desired country (currently only US and South Korea) containing the following criteria: 
 
 >* Country
->* Confirmed cases
+>* Total confirmed cases
+>* Today's confirmed cases
 >* Total deaths
+>* Today's deaths
 >* Total recovered
 >* Data date
 
@@ -70,11 +72,14 @@ The website offers daily coronavirus updates at 12:00 PM through either email, s
 
 ### Sample Message:
 > Country: United States of America\
-> Confirmed cases: 731602\
-> Total deaths: 38647\
-> Total recovered: 64840\
-> \
-> Data date: +2020-04-18
+> Confirmed cases: 1101811\
+> Daily confirmed cases 33928\
+> Total deaths: 64899\
+> Daily deaths: 1947\
+>\
+Total recovered: 164015\
+>\
+>Data date: +2020-05-01
 
 ## Future Work:
 - Add support for mopre countries.
