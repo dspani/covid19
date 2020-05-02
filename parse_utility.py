@@ -52,16 +52,19 @@ def read_and_parse(jdata):
         name = curr_cont_code + "-" + curr_prov
         data_dict.setdefault(name, {})
         data_dict[name][curr_date] = parsed_object
+
     return data_dict
 
 
-def output_to_string(parsed_data):
+def output_to_string(parsed_data, string1):
     string = ""
     string += "Country: " + str(parsed_data[0])
     if parsed_data[2] != "":
         string += "\nState: " + str(parsed_data[2])
     string += "\nConfirmed cases: " + str(parsed_data[7])
+    string += "\nDaily confirmed cases " +str(parsed_data[7] - string1[7])
     string += "\nTotal deaths: " + str(parsed_data[8])
+    string += "\nDaily deaths: " + str(parsed_data[8] - string1[8])
     string += "\nTotal recovered: " + str(parsed_data[9])
     string += "\n\nData date: +" + str(parsed_data[11])[:10]
     return string

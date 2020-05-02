@@ -5,13 +5,13 @@ import boto3
 import requests
 import parse_utility
 
-access_key = sys.argv[1]
-secret_key = sys.argv[2]
+#access_key = sys.argv[1]
+#secret_key = sys.argv[2]
 base_URL = "https://api.covid19api.com/total/country/"
 
 
 ## Sends message
-def send_text(arn, parsed_data):
+def send_text(arn,parsed_data, string1):
     # send text to all subbed & opted-in subs at arn
     # message contains parsed data
     sns = boto3.client(
@@ -21,7 +21,7 @@ def send_text(arn, parsed_data):
         region_name="us-east-1")
 
     # Message contains info in plain text
-    message = parse_utility.output_to_string(parsed_data)
+    message = parse_utility.output_to_string(parsed_data, string1)
     # Send to subscribers
     sns.publish(
         Message=message,
@@ -64,12 +64,14 @@ def united_states(arns):
     today = date.today()
     yesterday = today - datetime.timedelta(days=1)
     yesterday = yesterday.strftime("%Y-%m-%d")
+    yesterday2 = today - datetime.timedelta(days=2)
+    yesterday2 = yesterday2.strftime("%Y-%m-%d")
     url = base_URL + 'united-states'
     request = requests.get(url)
     jdata = request.json()
     parsed_data = parse_utility.read_and_parse(jdata)
     string = parsed_data.get("-").get(yesterday + "T00:00:00Z")  ## Use JSON file
-
+    string1 = parsed_data.get("-").get(yesterday2 + "T00:00:00Z")  ## Use JSON file
     ''''
     fname = "Live-By-Country-All-Status.json"
     with open("./json/" + fname) as jfile:
@@ -78,7 +80,7 @@ def united_states(arns):
         string = parsed_data.get("US-Washington").get("2020-04-14T00:00:00Z")
     '''
 
-    send_text(arns.get('us_text'), string)
+    send_text( arns.get('us_text'), string, string1)
     send_email(arns.get('us_email'), string)
 
 
@@ -90,14 +92,16 @@ def south_korea(arns):
     today = date.today()
     yesterday = today - datetime.timedelta(days=1)
     yesterday = yesterday.strftime("%Y-%m-%d")
-
+    yesterday2 = today - datetime.timedelta(days=2)
+    yesterday2 = yesterday2.strftime("%Y-%m-%d")
     url = base_URL + 'korea-south'
     request = requests.get(url)
     jdata = request.json()
     parsed_data = parse_utility.read_and_parse(jdata)
     string = parsed_data.get("-").get(yesterday + "T00:00:00Z")  ## Use JSON file
+    string1 = parsed_data.get("-").get(yesterday2 + "T00:00:00Z")  ## Use JSON file
 
-    send_text(arns.get('sk_text'), string)
+    send_text(arns.get('sk_text'), string, string1)
     send_email(arns.get('sk_email'), string)
 
 
@@ -108,8 +112,8 @@ def get_arns():
     # formats and returns in dict
     sns = boto3.client(
         'sns',
-        aws_access_key_id=access_key,
-        aws_secret_access_key=secret_key,
+        #aws_access_key_id=access_key,
+        #aws_secret_access_key=secret_key,
         region_name="us-east-1"
     )
 
@@ -127,7 +131,6 @@ def get_arns():
         elif 'korea-south_email' in arn.get("TopicArn"):
             arns['sk_email'] = arn.get("TopicArn")
 
-    print(arns)
     return arns
 
 
@@ -147,6 +150,5 @@ def main():
 
     united_states(us_arns)
     south_korea(sk_arns)
-
 
 main()
