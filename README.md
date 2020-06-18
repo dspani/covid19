@@ -1,3 +1,4 @@
+# This service is no longer in use
 # Covid 19 Notification —— [UWB Hacks the Cloud 2020](https://uwbhacks.com/)
 
 
