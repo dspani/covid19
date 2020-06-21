@@ -50,7 +50,7 @@
             //# sys.argv[4] email
             //# sys.argv[5] phone
             //echo "//shell_exec disabled for testing//";
-            echo shell_exec("python3 /deploy/hook.py '$user_name' '$_POST[type]' '$_POST[country]' '$user_email' '$user_phone' ");
+            echo shell_exec("python3 /deploy/hook.py ".escapeshellarg($user_name)." ".escapeshellarg($_POST[type])." ".escapeshellarg($_POST[country])." ".escapeshellarg($user_email)." ".escapeshellarg($user_phone));
             ?>
         </p>
 
